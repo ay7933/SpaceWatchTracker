@@ -47,6 +47,8 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
 
       const result = await satelliteImagery.mutateAsync(requestParams);
 
+      console.log("Satellite result:", { hasImageUrl: !!result.imageUrl, boundsUsed: bounds });
+
       // Store the satellite image in mapState so it can be displayed on the map
       updateMapState({ 
         satelliteImageUrl: result.imageUrl,

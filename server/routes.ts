@@ -255,6 +255,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/weather-tiles/wind/:z/:x/:y.png", async (req, res) => {
+    try {
+      const { z, x, y } = req.params;
+      const tileUrl = `https://tile.openweathermap.org/map/wind_new/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
+      
+      const response = await fetch(tileUrl);
+      if (!response.ok) throw new Error('Weather tile fetch failed');
+      
+      const buffer = await response.arrayBuffer();
+      res.set('Content-Type', 'image/png');
+      res.set('Cache-Control', 'public, max-age=300');
+      res.send(Buffer.from(buffer));
+    } catch (error) {
+      res.status(404).send('Weather tile not found');
+    }
+  });
+
   // Geocoding endpoint
   app.get("/api/geocode", async (req, res) => {
     try {

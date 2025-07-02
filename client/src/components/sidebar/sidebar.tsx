@@ -31,9 +31,10 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
       if (currentBounds) {
         bounds = currentBounds;
       } else {
-        // Calculate appropriate bounds based on zoom level
-        const latDiff = 1 / Math.pow(2, mapState.zoom - 8); // Adjust size based on zoom
-        const lngDiff = latDiff;
+        // Calculate appropriate bounds based on zoom level - larger area for better coverage
+        const zoomFactor = Math.max(0.01, 0.5 / Math.pow(2, mapState.zoom - 10));
+        const latDiff = zoomFactor;
+        const lngDiff = zoomFactor;
         bounds = [
           mapState.center[1] - lngDiff, // min longitude (west)
           mapState.center[0] - latDiff, // min latitude (south)
@@ -56,9 +57,7 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
         requestParams.dateTo = mapState.dateTo;
       }
 
-      console.log("Loading satellite imagery with bounds:", bounds);
       const result = await satelliteImagery.mutateAsync(requestParams);
-      console.log("Satellite imagery loaded successfully");
 
       // Store the satellite image in mapState so it can be displayed on the map
       updateMapState({ 

@@ -54,13 +54,30 @@ export function WeatherInfo({ lat, lng, enabled }: WeatherInfoProps) {
               </span>
               <span className="text-text-primary">{weather.cloudCover}%</span>
             </div>
-            <div className="pt-1 border-t border-border/50">
-              <div className="text-text-primary font-medium">{weather.weather}</div>
-              <div className="text-xs text-text-secondary capitalize">{weather.description}</div>
+            <div className="pt-2 border-t border-border/50">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-text-primary font-medium">{weather.weather}</div>
+                  <div className="text-xs text-text-secondary capitalize">{weather.description}</div>
+                </div>
+                <div className="text-2xl">
+                  {weather.icon?.includes('01') ? '☀️' : 
+                   weather.icon?.includes('02') ? '⛅' : 
+                   weather.icon?.includes('03') || weather.icon?.includes('04') ? '☁️' :
+                   weather.icon?.includes('09') || weather.icon?.includes('10') ? '🌧️' :
+                   weather.icon?.includes('11') ? '⛈️' :
+                   weather.icon?.includes('13') ? '🌨️' :
+                   weather.icon?.includes('50') ? '🌫️' : '🌤️'}
+                </div>
+              </div>
             </div>
           </>
+        ) : error ? (
+          <div className="text-red-400 text-xs">
+            Failed to load weather data. Check connection or coordinates.
+          </div>
         ) : (
-          <div className="text-text-secondary">No weather data available</div>
+          <div className="text-text-secondary">Enable weather overlay to view current conditions</div>
         )}
       </CardContent>
     </Card>

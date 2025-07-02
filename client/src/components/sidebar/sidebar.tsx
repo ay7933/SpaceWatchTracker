@@ -47,13 +47,19 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
 
       const result = await satelliteImagery.mutateAsync(requestParams);
 
-      console.log("Satellite result:", { hasImageUrl: !!result.imageUrl, boundsUsed: bounds });
+      console.log("Sidebar: Satellite result received", { 
+        hasImageUrl: !!result.imageUrl, 
+        boundsUsed: bounds,
+        imageUrlStart: result.imageUrl.substring(0, 50) + "..."
+      });
 
       // Store the satellite image in mapState so it can be displayed on the map
       updateMapState({ 
         satelliteImageUrl: result.imageUrl,
         satelliteImageBounds: bounds 
       });
+      
+      console.log("Sidebar: Updated map state with satellite data");
 
       toast({
         title: "Imagery Loaded",

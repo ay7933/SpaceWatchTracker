@@ -15,8 +15,21 @@ interface SatelliteImageryParams {
 export function useSatelliteImagery() {
   return useMutation({
     mutationFn: async (params: SatelliteImageryParams): Promise<SatelliteImageResponse> => {
-      const response = await apiRequest('POST', '/api/satellite', params);
-      return response.json();
+      const response = await fetch('/api/satellite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch satellite imagery: ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      console.log("Satellite API response:", { hasImageUrl: !!result.imageUrl, cached: result.cached });
+      return result;
     },
   });
 }

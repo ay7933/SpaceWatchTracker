@@ -136,7 +136,7 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
           '/api/weather-tiles/temp/{z}/{x}/{y}.png',
           {
             attribution: '© OpenWeatherMap',
-            opacity: 0.7,
+            opacity: 0.9,
             maxZoom: 18,
             errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', // transparent 1x1 gif
             className: 'weather-overlay-temp'
@@ -164,7 +164,7 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
           '/api/weather-tiles/precipitation/{z}/{x}/{y}.png',
           {
             attribution: '© OpenWeatherMap',
-            opacity: 0.8,
+            opacity: 0.9,
             maxZoom: 18,
             errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
             className: 'weather-overlay-precipitation'
@@ -191,7 +191,7 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
           '/api/weather-tiles/wind/{z}/{x}/{y}.png',
           {
             attribution: '© OpenWeatherMap',
-            opacity: 0.8,
+            opacity: 0.9,
             maxZoom: 18,
             errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
             className: 'weather-overlay-wind'

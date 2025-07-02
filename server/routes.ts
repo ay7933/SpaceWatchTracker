@@ -89,7 +89,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const requestBody = {
         input: {
           bounds: {
-            bbox: bbox,
+            geometry: {
+              type: "Polygon",
+              coordinates: [[
+                [bbox[0], bbox[1]],
+                [bbox[2], bbox[1]],
+                [bbox[2], bbox[3]],
+                [bbox[0], bbox[3]],
+                [bbox[0], bbox[1]]
+              ]]
+            },
             properties: {
               crs: "http://www.opengis.net/def/crs/EPSG/0/4326"
             }
@@ -102,9 +111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   from: dateFrom || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] + "T00:00:00Z",
                   to: dateTo || new Date().toISOString().split('T')[0] + "T23:59:59Z"
                 },
-                ...(maxCloudCoverage !== undefined && {
-                  maxCloudCoverage: maxCloudCoverage
-                })
+                maxCloudCoverage: maxCloudCoverage || 30
               }
             }
           ]
@@ -134,6 +141,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       if (!response.ok) {
+        const errorBody = await response.text();
+        console.error("Sentinel Hub API Error:", response.status, response.statusText, errorBody);
         throw new Error(`Sentinel Hub API error: ${response.status} ${response.statusText}`);
       }
 

@@ -11,7 +11,14 @@ export function useWeatherData(lat: number, lon: number, enabled: boolean = true
 
 export function useGeocoding(query: string, enabled: boolean = true) {
   return useQuery<LocationResult[]>({
-    queryKey: ['/api/geocode', { query }],
+    queryKey: ['/api/geocode', query],
+    queryFn: async () => {
+      const response = await fetch(`/api/geocode?query=${encodeURIComponent(query)}`);
+      if (!response.ok) {
+        throw new Error('Failed to geocode location');
+      }
+      return response.json();
+    },
     enabled: enabled && query.length > 2,
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });

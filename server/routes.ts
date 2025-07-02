@@ -19,37 +19,34 @@ async function getSentinelHubToken(): Promise<string> {
     throw new Error("Sentinel Hub credentials not configured");
   }
 
-  const response = await fetch("https://services.sentinel-hub.com/oauth/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "client_credentials",
-      client_id: SENTINEL_HUB_CLIENT_ID,
-      client_secret: SENTINEL_HUB_CLIENT_SECRET,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Sentinel Hub OAuth error:", {
-      status: response.status,
-      statusText: response.statusText,
-      body: errorText,
-      clientId: SENTINEL_HUB_CLIENT_ID ? 'present' : 'missing',
-      clientSecret: SENTINEL_HUB_CLIENT_SECRET ? 'present' : 'missing'
+  try {
+    const response = await fetch("https://services.sentinel-hub.com/oauth/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "client_credentials",
+        client_id: SENTINEL_HUB_CLIENT_ID,
+        client_secret: SENTINEL_HUB_CLIENT_SECRET,
+      }),
     });
-    throw new Error(`Failed to get Sentinel Hub token: ${response.statusText} - ${errorText}`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to get Sentinel Hub token: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    sentinelHubToken = {
+      access_token: data.access_token,
+      expires_at: Date.now() + (data.expires_in * 1000) - 60000, // Subtract 1 minute for safety
+    };
+
+    return sentinelHubToken.access_token;
+  } catch (error) {
+    // If credentials fail, the user needs to provide working credentials
+    throw new Error("Sentinel Hub authentication failed. Please verify your Client ID and Client Secret are correct.");
   }
-
-  const data = await response.json();
-  sentinelHubToken = {
-    access_token: data.access_token,
-    expires_at: Date.now() + (data.expires_in * 1000) - 60000, // Subtract 1 minute for safety
-  };
-
-  return sentinelHubToken.access_token;
 }
 
 const satelliteRequestSchema = z.object({

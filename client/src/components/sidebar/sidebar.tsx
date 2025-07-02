@@ -99,9 +99,9 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
   return (
     <>
       <div className={`
-        w-80 bg-surface border-r border-border flex flex-col shadow-xl z-10 transition-all duration-300
+        w-80 bg-surface border-r border-border flex flex-col shadow-xl transition-all duration-300
         ${isMobileOpen ? 'mobile-sidebar open' : 'mobile-sidebar'}
-        lg:transform-none lg:relative lg:translate-x-0
+        lg:transform-none lg:relative lg:translate-x-0 lg:z-auto
       `}>
         {/* Header */}
         <div className="p-6 border-b border-border">

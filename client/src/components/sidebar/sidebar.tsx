@@ -23,6 +23,8 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
 
   const handleLoadImagery = async () => {
     try {
+      console.log("Starting satellite imagery request...");
+      
       // Use actual map bounds if available, otherwise fall back to center-based bounds
       const bounds: [number, number, number, number] = currentBounds || [
         mapState.center[1] - 0.1,
@@ -45,12 +47,14 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
         requestParams.dateTo = mapState.dateTo;
       }
 
+      console.log("Making satellite API request with params:", requestParams);
+
       const result = await satelliteImagery.mutateAsync(requestParams);
 
       console.log("Sidebar: Satellite result received", { 
         hasImageUrl: !!result.imageUrl, 
         boundsUsed: bounds,
-        imageUrlStart: result.imageUrl.substring(0, 50) + "..."
+        imageUrlStart: result.imageUrl?.substring(0, 50) + "..."
       });
 
       // Store the satellite image in mapState so it can be displayed on the map
@@ -66,6 +70,7 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
         description: "Satellite imagery has been updated successfully.",
       });
     } catch (error) {
+      console.error("Satellite imagery error:", error);
       toast({
         title: "Error",
         description: "Failed to load satellite imagery. Please try again.",

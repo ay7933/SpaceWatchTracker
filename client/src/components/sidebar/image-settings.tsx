@@ -36,9 +36,9 @@ export function ImageSettings({ settings, onSettingsChange }: ImageSettingsProps
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="10">10m (High)</SelectItem>
-              <SelectItem value="20">20m (Medium)</SelectItem>
-              <SelectItem value="60">60m (Low)</SelectItem>
+              <SelectItem value="10">10m - Highest Detail</SelectItem>
+              <SelectItem value="20">20m - Standard Detail</SelectItem>
+              <SelectItem value="60">60m - Lower Detail</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -43,11 +43,14 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
         ];
       }
 
+      // Calculate dimensions based on resolution setting
+      const baseDimension = Math.max(512, Math.min(2048, 1024 / (mapState.imageSettings.resolution / 20)));
+      
       const requestParams: any = {
         bbox: bounds,
         layer: mapState.selectedLayer,
-        width: 1024,
-        height: 1024,
+        width: Math.round(baseDimension),
+        height: Math.round(baseDimension),
         maxCloudCoverage: mapState.imageSettings.cloudCoverage,
       };
 

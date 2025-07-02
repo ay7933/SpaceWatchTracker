@@ -14,7 +14,7 @@ export function WeatherInfo({ lat, lng, enabled }: WeatherInfoProps) {
   if (!enabled || error) return null;
 
   return (
-    <Card className="absolute bottom-4 right-4 bg-surface/90 backdrop-blur-sm border-border shadow-lg max-w-xs z-20">
+    <Card className="absolute bottom-4 right-4 bg-surface/90 backdrop-blur-sm border-border shadow-lg max-w-xs z-[1000]">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between text-text-primary text-base">
           Current Weather

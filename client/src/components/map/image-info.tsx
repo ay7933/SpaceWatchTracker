@@ -13,7 +13,7 @@ export function ImageInfo({ layer, dateFrom, dateTo }: ImageInfoProps) {
   const displayDate = dateTo || dateFrom || new Date().toISOString().split('T')[0];
 
   return (
-    <Card className="absolute bottom-4 left-4 bg-surface/90 backdrop-blur-sm border-border shadow-lg max-w-xs z-20">
+    <Card className="absolute bottom-4 left-4 bg-surface/90 backdrop-blur-sm border-border shadow-lg max-w-xs z-[1000]">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between text-text-primary text-base">
           Image Info

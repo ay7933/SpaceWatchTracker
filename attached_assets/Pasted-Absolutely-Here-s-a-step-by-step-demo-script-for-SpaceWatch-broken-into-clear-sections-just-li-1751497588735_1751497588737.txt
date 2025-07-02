@@ -1,0 +1,81 @@
+Absolutely! Here’s a **step-by-step demo script for SpaceWatch**, broken into clear sections just like your Shot Analyzer example. Each step is concise, direct, and tells you exactly what to say and do as you present your app live—no slides needed.
+
+## SpaceWatch Demo Script (with Feature Highlights)
+
+### 1. Introduction
+"Hello, my name is [Your Name], and I’m excited to show you SpaceWatch—a web app that brings professional satellite imagery and real-time weather data to anyone, anywhere. Whether you’re a researcher, farmer, city planner, or just curious, SpaceWatch puts the power of Earth observation in your hands."
+
+### 2. Opening the App & Main Map
+"When you open SpaceWatch, you’re greeted by an interactive world map. You can pan and zoom to explore any location on Earth, just like Google Maps, but with live satellite data."
+
+### 3. Global Location Search
+"Let’s search for a location. I’ll type in ‘Los Angeles’ in the search bar. The map instantly zooms to the city, and you’ll see the coordinates and zoom level update in real time at the corner of the screen."
+
+### 4. Switching Satellite Imagery Layers
+"Now, let’s look at the different ways we can view the Earth.  
+I’ll open the layer menu on the sidebar. Here, you’ll see ten professional satellite layers:  
+- True Color (natural view)  
+- NDVI Vegetation  
+- Agriculture  
+- Color Infrared  
+- False Color Urban  
+- Geology  
+- Moisture Index  
+- SWIR  
+- Atmospheric Penetration  
+- Bathymetric
+
+Let’s start with True Color. This shows the Earth as you’d see it from space.  
+Now, I’ll switch to NDVI Vegetation. Instantly, the map updates to highlight plant health—green means healthy vegetation, brown means less healthy."
+
+### 5. Layer Information & Color Legend
+"Whenever you select a layer, this information panel appears.  
+It explains what the layer shows, which Sentinel-2 bands are used, and what the colors mean.  
+For example, NDVI uses near-infrared and red bands, and the legend helps you interpret the colors on the map.  
+If you’re ever unsure, you can open the Sentinel-2 reference guide here for details on all 13 spectral bands."
+
+### 6. Weather Integration
+"SpaceWatch also brings in real-time weather data.  
+At the top right, you’ll see the current temperature, humidity, wind speed, and cloud coverage for the map center.  
+Weather icons make it easy to read at a glance—like a sun for clear, or a cloud for overcast.  
+You can toggle weather overlays on the map to see temperature or precipitation patterns.  
+This data refreshes automatically every 10 minutes."
+
+### 7. Date Range & Historical Imagery
+"Want to see how things change over time?  
+Just pick a different date or date range using the date selector.  
+The map reloads with satellite imagery from that time, letting you track changes—like crop growth or urban expansion."
+
+### 8. Image Quality & Customization
+"You can adjust image quality and set cloud coverage thresholds, so you always get the clearest view.  
+When you find an image you like, just click ‘Download’ to save it as a PNG or JPG."
+
+### 9. Professional Analysis Tools
+"For advanced users, SpaceWatch supports multi-spectral analysis.  
+Switch between visible, infrared, and other band combinations to study vegetation, geology, water depth, or city infrastructure.  
+This makes SpaceWatch powerful for agriculture, environmental science, and urban planning."
+
+### 10. Help, Accessibility, and User Experience
+"If you ever need help, click the help button for built-in guides and explanations for every feature.  
+The app uses a dark space theme for comfortable viewing, works on any device, and saves your settings for next time.  
+Keyboard shortcuts and intelligent caching make everything fast and efficient."
+
+### 11. Error Handling & Reliability
+"If data isn’t available for a certain date or area, SpaceWatch gives a clear message and suggests what to try next.  
+All data is sourced from Sentinel-2 satellites and OpenWeatherMap, so you know it’s accurate and up-to-date."
+
+### 12. Closing
+"In summary, SpaceWatch is your all-in-one platform for exploring, analyzing, and understanding our planet with satellite imagery and weather data.  
+Thank you for watching—I’m happy to answer any questions or show you a specific feature in action!"
+
+**Tip:**  
+As you demo, point to each feature on your screen, and use phrases like “As you can see here…” or “Notice how this panel updates…” to keep your audience engaged and oriented.
+
+[1] https://apps.apple.com/us/app/shot-count-basketball-ai/id1486237449
+[2] https://digitalhealth.folio3.com/basketball-shoot-tracking-app-with-biomechanical-device-integration/
+[3] https://apps.apple.com/us/app/hoopsong-shot-tracker/id6449850917
+[4] https://kinexon-sports.com/blog/what-is-basketball-shot-load
+[5] https://www.trurepapp.com
+[6] https://www.noahbasketball.com/products/noah-pro
+[7] https://www.reddit.com/r/BasketballTips/comments/1cp2vip/basketball_shot_analysis_app/
+[8] https://www.homecourt.ai

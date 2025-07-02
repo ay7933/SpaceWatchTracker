@@ -23,8 +23,6 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
 
   const handleLoadImagery = async () => {
     try {
-      console.log("Starting satellite imagery request...");
-      
       // Use actual map bounds if available, otherwise fall back to center-based bounds
       const bounds: [number, number, number, number] = currentBounds || [
         mapState.center[1] - 0.1,
@@ -47,30 +45,19 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
         requestParams.dateTo = mapState.dateTo;
       }
 
-      console.log("Making satellite API request with params:", requestParams);
-
       const result = await satelliteImagery.mutateAsync(requestParams);
-
-      console.log("Sidebar: Satellite result received", { 
-        hasImageUrl: !!result.imageUrl, 
-        boundsUsed: bounds,
-        imageUrlStart: result.imageUrl?.substring(0, 50) + "..."
-      });
 
       // Store the satellite image in mapState so it can be displayed on the map
       updateMapState({ 
         satelliteImageUrl: result.imageUrl,
         satelliteImageBounds: bounds 
       });
-      
-      console.log("Sidebar: Updated map state with satellite data");
 
       toast({
         title: "Imagery Loaded",
         description: "Satellite imagery has been updated successfully.",
       });
     } catch (error) {
-      console.error("Satellite imagery error:", error);
       toast({
         title: "Error",
         description: "Failed to load satellite imagery. Please try again.",
@@ -80,11 +67,26 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
   };
 
   const handleDownloadImage = () => {
-    // Implement download functionality
-    toast({
-      title: "Download",
-      description: "Image download will be implemented with map capture.",
-    });
+    if (mapState.satelliteImageUrl) {
+      // Create a download link for the current satellite image
+      const link = document.createElement('a');
+      link.href = mapState.satelliteImageUrl;
+      link.download = `spacewatch-${mapState.selectedLayer}-${new Date().toISOString().split('T')[0]}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast({
+        title: "Download Started",
+        description: "Satellite image has been downloaded successfully.",
+      });
+    } else {
+      toast({
+        title: "No Image Available",
+        description: "Please load satellite imagery first before downloading.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleLocationSelect = (lat: number, lon: number) => {

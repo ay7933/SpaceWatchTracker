@@ -288,7 +288,10 @@ function getEvalscriptForLayer(layer: string): string {
       }
       function evaluatePixel(sample) {
         let ndvi = (sample.B08 - sample.B04) / (sample.B08 + sample.B04);
-        return colorBlend(ndvi, [0.0, 0.5, 1.0], [[1,0,0], [1,1,0], [0,1,0]], 1);
+        if (ndvi < 0.0) return [0.8, 0.2, 0.2, 1]; // Red for no vegetation
+        else if (ndvi < 0.3) return [1.0, 1.0, 0.2, 1]; // Yellow for sparse vegetation
+        else if (ndvi < 0.7) return [0.7, 1.0, 0.2, 1]; // Light green for moderate vegetation
+        else return [0.2, 0.8, 0.2, 1]; // Dark green for dense vegetation
       }
     `,
     COLOR_INFRARED: `

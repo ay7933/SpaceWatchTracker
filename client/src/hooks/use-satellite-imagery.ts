@@ -28,7 +28,6 @@ export function useSatelliteImagery() {
       }
       
       const result = await response.json();
-      console.log("Satellite API response:", { hasImageUrl: !!result.imageUrl, cached: result.cached });
       return result;
     },
   });

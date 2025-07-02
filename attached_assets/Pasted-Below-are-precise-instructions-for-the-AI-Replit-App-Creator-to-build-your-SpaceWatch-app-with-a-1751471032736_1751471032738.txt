@@ -1,0 +1,120 @@
+Below are **precise instructions** for the AI Replit App Creator to build your SpaceWatch app with all required features and the correct API integrations. This guide is structured for clarity and completeness, ensuring the app is robust, user-friendly, and leverages all your available APIs.
+
+## Instructions for AI Replit App Creator
+
+### **App Overview**
+Build a web application called **SpaceWatch** that provides users with:
+- Real-time and historical satellite imagery for any location on Earth
+- Multiple visualization layers (e.g., true color, NDVI, agriculture, geology, etc.)
+- Weather overlays for the selected region
+- Search, view, and download capabilities for satellite images
+- A modern, responsive UI suitable for both desktop and mobile
+
+### **Required Features**
+
+1. **User Interface**
+   - Search bar for entering a location (by name or coordinates)
+   - Interactive world map (use [Leaflet.js](https://leafletjs.com/) or [React-Leaflet](https://react-leaflet.js.org/) for React)
+   - Sidebar or dropdown to select visualization layers (use the provided Sentinel Hub layers)
+   - Date picker for selecting imagery date range
+   - Weather overlay toggle (current weather and forecast)
+   - Download button for current map view as an image
+   - Responsive design for mobile and desktop
+
+2. **APIs to Integrate**
+   - **Sentinel Hub Processing API** for satellite imagery (use the Instance ID and layers provided below)
+   - **OpenWeatherMap API** for weather overlays
+   - **NASA Open APIs** (optional, for APOD or additional data if time allows)
+
+3. **Authentication & Configuration**
+   - Use OAuth 2.0 to obtain an access token from Sentinel Hub using the provided Client ID and Client Secret
+   - Store API credentials securely (use environment variables in Replit)
+
+4. **Layer Support**
+   - Allow users to choose from these Sentinel Hub layers:
+     - Agriculture (`AGRICULTURE`)
+     - Atmospheric Penetration (`ATMOSPHERIC_PENETRATION`)
+     - Bathymetric (`BATHYMETRIC`)
+     - Color Infrared (vegetation) (`COLOR_INFRARED`)
+     - False color (urban) (`COLOR_INFRARED_URBAN_`)
+     - Geology (`GEOLOGY`)
+     - Moisture Index (`MOISTURE_INDEX`)
+     - Natural color (true color) (`TRUE_COLOR`)
+     - SWIR (`SWIR`)
+     - Vegetation Index - NDVI (`VEGETATION_INDEX`)
+
+5. **API Credentials**
+   - **Sentinel Hub Instance ID:** `04634499-7569-49aa-a4a1-b0d174c6d436`
+   - **OpenWeatherMap API Key:** `d444ca60f569dd9924ebe4c65311b1a3`
+   - **NASA API Key:** `u9qxpcvLrMYOpAEPBjQyjOxNuzpfF51LLhekbiAP`
+   - **Sentinel Hub OAuth Client ID and Secret:** (to be provided securely by the user)
+
+### **Technical Implementation Details**
+
+#### **Backend (Python/Flask or FastAPI)**
+- **Endpoints:**
+  - `/api/satellite`: Accepts coordinates, date range, and layer; returns satellite image from Sentinel Hub
+  - `/api/weather`: Accepts coordinates; returns weather data from OpenWeatherMap
+  - `/api/nasa`: (Optional) Returns NASA APOD or other NASA data
+
+- **Sentinel Hub Processing API Workflow:**
+  1. Use OAuth 2.0 to get an access token with the Client ID and Secret.
+  2. Make a POST request to:
+     ```
+     https://services.sentinel-hub.com/api/v1/process
+     ```
+     Include in the request:
+     - `"instance_id": "04634499-7569-49aa-a4a1-b0d174c6d436"`
+     - Selected layer (e.g., `"layer": "TRUE_COLOR"`)
+     - Bounding box (from map or search)
+     - Date/time range
+     - Output size and format
+     - Evalscript (if custom visualization is needed)
+  3. Return the image (as PNG/JPEG) to the frontend.
+
+- **OpenWeatherMap API Workflow:**
+  - Make GET requests to:
+    ```
+    https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=d444ca60f569dd9924ebe4c65311b1a3
+    ```
+  - Parse and return weather overlays for the frontend.
+
+#### **Frontend**
+- Use React (with React-Leaflet) or a similar modern JS framework.
+- Map displays satellite imagery tiles from backend.
+- Sidebar/dropdown for layer selection.
+- Date picker for time range.
+- Weather overlay toggle.
+- Download button for current view.
+
+#### **Security**
+- Store all API keys and secrets as environment variables.
+- Never expose secrets in the frontend code.
+
+### **References for Implementation**
+
+- **Sentinel Hub API Beginner’s Guide:**  
+  [Official Guide](https://docs.sentinel-hub.com/api/latest/user-guides/beginners-guide/)[1][2]
+- **OpenWeatherMap API Docs:**  
+  [https://openweathermap.org/api](https://openweathermap.org/api)
+- **NASA API Docs:**  
+  [https://api.nasa.gov](https://api.nasa.gov)
+
+### **Summary for the AI App Creator**
+
+- Build a modern, interactive satellite imagery dashboard with weather overlays.
+- Integrate Sentinel Hub, OpenWeatherMap, and NASA APIs using the provided credentials.
+- Support all the listed visualization layers and allow users to select date ranges and locations.
+- Ensure secure handling of all API credentials.
+- Provide a clean, user-friendly, and responsive interface.
+
+**If you need code samples for authentication or API requests, refer to the official Sentinel Hub Beginner’s Guide or request additional examples.**
+
+[1] https://docs.sentinel-hub.com/api/latest/user-guides/beginners-guide/
+[2] https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/UserGuides/BeginnersGuide.html
+[3] https://www.youtube.com/watch?v=woiRq8nGIs4
+[4] https://sentinelhub-py.readthedocs.io/en/latest/examples/process_request.html
+[5] https://www.sentinel-hub.com/develop/api/
+[6] https://dataspace.copernicus.eu/news/2024-1-24-new-tutorial-videos-sentinel-hub-api-newcomers
+[7] https://www.sentinel-hub.com/develop/integrate/
+[8] https://github.com/planetlabs/notebooks/blob/master/jupyter-notebooks/Sentinel%20Hub%20APIs/Intro%20to%20SH%20APIs/Introduction_to_SH_APIs.ipynb

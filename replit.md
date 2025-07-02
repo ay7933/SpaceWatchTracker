@@ -108,6 +108,14 @@ SpaceWatch is a modern web application that provides users with real-time and hi
 ```
 Changelog:
 - July 02, 2025. Initial setup
+- July 02, 2025. Comprehensive layer information system implemented:
+  * Added detailed layer metadata with band combinations and color guides
+  * Created LayerInfo component with technical specifications and color keys
+  * Implemented BandsReference component with complete Sentinel-2 band documentation
+  * Enhanced LayerSelector with category grouping and improved UX
+  * Updated ImageInfo component to display actual band information
+  * Fixed vegetation (NDVI) layer evalscript for proper visualization
+  * Added complete download functionality for satellite imagery
 ```
 
 ## User Preferences

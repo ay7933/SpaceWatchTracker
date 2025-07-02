@@ -3,6 +3,8 @@ import { LayerSelector } from './layer-selector';
 import { DateRangePicker } from './date-range-picker';
 import { WeatherOverlay } from './weather-overlay';
 import { ImageSettings } from './image-settings';
+import { LayerInfo } from './layer-info';
+import { BandsReference } from './bands-reference';
 import { Button } from '@/components/ui/button';
 import { useSatelliteImagery } from '@/hooks/use-satellite-imagery';
 import { useToast } from '@/hooks/use-toast';
@@ -133,6 +135,10 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
             settings={mapState.imageSettings}
             onSettingsChange={(settings) => updateMapState({ imageSettings: settings })}
           />
+
+          <LayerInfo selectedLayer={mapState.selectedLayer} />
+
+          <BandsReference />
         </div>
 
         {/* Action Buttons */}

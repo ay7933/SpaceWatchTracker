@@ -42,6 +42,14 @@ export function ImageInfo({ layer, dateFrom, dateTo }: ImageInfoProps) {
           </span>
           <span className="text-text-primary text-xs">{layerInfo?.name || layer}</span>
         </div>
+        {layerInfo && (
+          <div className="flex justify-between items-center">
+            <span className="text-text-secondary text-xs">
+              Bands:
+            </span>
+            <span className="text-text-primary text-xs font-mono">{layerInfo.bands}</span>
+          </div>
+        )}
         <div className="flex justify-between items-center">
           <span className="text-text-secondary flex items-center">
             <Cloud size={14} className="mr-1" />

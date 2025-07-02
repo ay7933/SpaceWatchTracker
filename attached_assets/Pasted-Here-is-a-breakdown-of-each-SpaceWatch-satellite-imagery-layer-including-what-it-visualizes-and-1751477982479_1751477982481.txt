@@ -1,0 +1,66 @@
+Here is a breakdown of **each SpaceWatch satellite imagery layer**, including what it visualizes and the specific Sentinel-2 bands or band combinations it uses. This will help users understand what they’re seeing and why each layer is valuable.
+
+### **Natural Color & Basic Imagery**
+
+| Layer Name         | Description                                                                 | Sentinel-2 Bands Used         | Visualization Details |
+|--------------------|-----------------------------------------------------------------------------|-------------------------------|----------------------|
+| **True Color**     | Natural color imagery showing Earth as you’d see it from space              | B04 (Red), B03 (Green), B02 (Blue) | Displays landscapes in realistic colors; forests are green, water is blue, cities are gray[1][2][4]. |
+| **Color Infrared** | False color that highlights vegetation in red tones                         | B08 (NIR), B04 (Red), B03 (Green) | Healthy vegetation appears bright red; helps distinguish plant cover from other surfaces[2][4]. |
+| **False Color (Urban)** | Optimized for urban area analysis                                      | B12 (SWIR2), B11 (SWIR1), B04 (Red) | Urban areas and man-made features stand out; useful for city mapping and infrastructure[4][7]. |
+
+### **Vegetation & Agriculture**
+
+| Layer Name         | Description                                                                 | Sentinel-2 Bands Used         | Visualization Details |
+|--------------------|-----------------------------------------------------------------------------|-------------------------------|----------------------|
+| **NDVI (Vegetation)** | Normalized Difference Vegetation Index showing plant health              | B08 (NIR), B04 (Red)          | Green = healthy vegetation, brown/yellow = stressed or sparse vegetation; calculated as (B08-B04)/(B08+B04)[2][4]. |
+| **Agriculture**    | Specialized monitoring for crop analysis and farming                        | B11 (SWIR1), B08 (NIR), B02 (Blue) | Highlights crop types and field boundaries; sensitive to plant moisture and structure[4]. |
+| **Moisture Index** | Shows surface moisture levels and water content                             | B08 (NIR), B11 (SWIR1)        | Blue/green tones indicate wetter areas, brown/yellow for drier soil; calculated as (B08-B11)/(B08+B11)[2][4]. |
+
+### **Geological & Environmental**
+
+| Layer Name              | Description                                                             | Sentinel-2 Bands Used         | Visualization Details |
+|-------------------------|-------------------------------------------------------------------------|-------------------------------|----------------------|
+| **Geology**             | Reveals geological features, rock types, and terrain structures         | B12 (SWIR2), B11 (SWIR1), B02 (Blue) | Highlights minerals, rock outcrops, and faults; useful for geological mapping[4][7]. |
+| **SWIR**                | Short-wave infrared for mineral detection and analysis                  | B12 (SWIR2), B08 (NIR), B04 (Red) | Useful for burn scar mapping, mineral exploration, and soil moisture[2][4]. |
+| **Atmospheric Penetration** | Cuts through haze and atmosphere for clearer views                  | B12 (SWIR2), B11 (SWIR1), B08A (Narrow NIR) | Reduces atmospheric effects, enhances surface features in hazy regions[4]. |
+
+### **Water & Coastal**
+
+| Layer Name         | Description                                                                 | Sentinel-2 Bands Used         | Visualization Details |
+|--------------------|-----------------------------------------------------------------------------|-------------------------------|----------------------|
+| **Bathymetric**    | Water depth visualization for coastal and marine areas                      | B04 (Red), B03 (Green), B02 (Blue) | Enhances shallow water features and underwater topography; clear water appears light blue, deeper water is darker[4]. |
+
+## **Sentinel-2 Bands Reference Table**
+
+| Band  | Name                    | Wavelength (nm) | Resolution (m) | Typical Use                       |
+|-------|-------------------------|-----------------|---------------|-----------------------------------|
+| B01   | Coastal aerosol         | 443             | 60            | Aerosol, coastal studies          |
+| B02   | Blue                    | 490             | 10            | True color, water, vegetation     |
+| B03   | Green                   | 560             | 10            | True color, vegetation            |
+| B04   | Red                     | 665             | 10            | True color, NDVI                  |
+| B05   | Vegetation red edge     | 705             | 20            | Vegetation analysis               |
+| B06   | Vegetation red edge     | 740             | 20            | Vegetation analysis               |
+| B07   | Vegetation red edge     | 783             | 20            | Vegetation analysis               |
+| B08   | Near-infrared (NIR)     | 842             | 10            | NDVI, vegetation, biomass         |
+| B8A   | Narrow NIR              | 865             | 20            | Atmospheric penetration           |
+| B09   | Water vapour            | 945             | 60            | Water vapor, clouds               |
+| B10   | SWIR – Cirrus           | 1375            | 60            | Cirrus cloud detection            |
+| B11   | SWIR1                   | 1610            | 20            | Moisture, geology, agriculture    |
+| B12   | SWIR2                   | 2190            | 20            | Geology, urban, atmospheric pen.  |
+
+**Sources:**  
+[1][2][3][4][7]
+
+**How to use:**  
+- When a user selects a layer, the app should update the map to display imagery using the relevant band combination and provide a brief description and legend explaining what the colors mean and what features are highlighted.
+
+Let me know if you need example evalscripts or legends for any specific layer.
+
+[1] https://en.wikipedia.org/wiki/Sentinel-2
+[2] https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/bands/
+[3] https://hatarilabs.com/ih-en/how-many-spectral-bands-have-the-sentinel-2-images
+[4] https://gisgeography.com/sentinel-2-bands-combinations/
+[5] https://sentiwiki.copernicus.eu/web/s2-mission
+[6] https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/
+[7] https://atlas.co/blog/sentinel-bands-and-their-combinations/
+[8] https://www.sciencedirect.com/topics/earth-and-planetary-sciences/sentinel-2

@@ -1,0 +1,31 @@
+Right now, your app is designed to connect to the **Sentinel Hub API** to fetch and display satellite imagery and related Earth observation data for user-specified locations and time ranges. Here’s what it’s currently set up to do, based on the Sentinel Hub capabilities and your configuration:
+
+- **Satellite Imagery Retrieval:**  
+  The app uses the Sentinel Hub Processing API to generate and display satellite images for any area of interest and time range you specify. You can select from multiple visualization layers (such as true color, NDVI, agriculture, geology, and more) that you’ve configured in Sentinel Hub[2][3].
+
+- **Layer Selection:**  
+  Users can choose from various preconfigured or custom layers in the app, allowing for different types of analysis (e.g., vegetation health, urban expansion, moisture index)[2].
+
+- **Date and Area Selection:**  
+  You can specify the geographic area and the date or date range for which you want to view satellite imagery. The app fetches the relevant data from Sentinel Hub’s cloud archive[2][3].
+
+- **Visualization and Download:**  
+  The app processes the satellite data and provides personalized visual representations, which you can view and potentially download for further analysis or reporting[2][3].
+
+- **Authentication Required:**  
+  To function, the app requires valid Sentinel Hub OAuth credentials (Client ID and Client Secret) to authenticate and access the satellite imagery service. Without these, the app cannot load or display imagery[2].
+
+- **Potential for More Features:**  
+  The underlying Sentinel Hub platform supports advanced features like time-lapse, statistical analysis, custom scripting, and integration with other GIS tools, but your app’s current functionality depends on which of these you’ve chosen to implement and expose to users[1][2][3].
+
+**In summary:**  
+Your app is a satellite imagery viewer and analysis tool powered by Sentinel Hub. It lets users select a region, a date or date range, and a visualization layer to view processed satellite images. The app relies on Sentinel Hub’s cloud APIs for real-time data access and visualization, but requires correct API credentials to work[2][3].
+
+[1] https://www.youtube.com/watch?v=uBinB7CXbzg
+[2] https://dataspace.copernicus.eu/analyse/apis/sentinel-hub
+[3] https://www.sentinel-hub.com
+[4] https://business.esa.int/sentinel-hub-1-year-free-earth-observation-data
+[5] https://www.sinergise.com/en/solutions/sentinel-hub
+[6] https://citizenevidence.org/2023/03/21/summit-series-a-beginners-guide-to-sentinel-hub/
+[7] https://www.sentinel-hub.com/explore/eobrowser/
+[8] https://apps.sentinel-hub.com/eo-browser/

@@ -60,8 +60,8 @@ const satelliteRequestSchema = z.object({
 });
 
 const weatherRequestSchema = z.object({
-  lat: z.number(),
-  lon: z.number(),
+  lat: z.string().transform(Number),
+  lon: z.string().transform(Number),
 });
 
 const geocodeRequestSchema = z.object({

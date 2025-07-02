@@ -133,3 +133,26 @@ input[type="range"] {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: hsl(240, 3.7%, 35%);
 }
+
+/* Weather overlay styles for map visibility */
+.weather-overlay-temp {
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.weather-overlay-precipitation {
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.weather-overlay-wind {
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+/* Leaflet weather tile layer ordering */
+.leaflet-tile-pane .weather-overlay-temp,
+.leaflet-tile-pane .weather-overlay-precipitation, 
+.leaflet-tile-pane .weather-overlay-wind {
+  z-index: 200 !important;
+}

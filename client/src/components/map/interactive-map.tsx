@@ -136,10 +136,21 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
           '/api/weather-tiles/temp/{z}/{x}/{y}.png',
           {
             attribution: '© OpenWeatherMap',
-            opacity: 0.6,
+            opacity: 0.8,
             maxZoom: 18,
+            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', // transparent 1x1 gif
+            className: 'weather-overlay-temp'
           }
         );
+        
+        // Add error handling
+        weatherLayersRef.current.temperature.on('tileerror', (e: any) => {
+          console.log('Temperature tile error:', e);
+        });
+        
+        weatherLayersRef.current.temperature.on('tileload', (e: any) => {
+          console.log('Temperature tile loaded:', e.tile?.src);
+        });
       }
       weatherLayersRef.current.temperature.addTo(map);
     } else if (weatherLayersRef.current.temperature) {
@@ -153,10 +164,20 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
           '/api/weather-tiles/precipitation/{z}/{x}/{y}.png',
           {
             attribution: '© OpenWeatherMap',
-            opacity: 0.6,
+            opacity: 0.8,
             maxZoom: 18,
+            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+            className: 'weather-overlay-precipitation'
           }
         );
+        
+        weatherLayersRef.current.precipitation.on('tileerror', (e: any) => {
+          console.log('Precipitation tile error:', e);
+        });
+        
+        weatherLayersRef.current.precipitation.on('tileload', (e: any) => {
+          console.log('Precipitation tile loaded:', e.tile?.src);
+        });
       }
       weatherLayersRef.current.precipitation.addTo(map);
     } else if (weatherLayersRef.current.precipitation) {
@@ -170,10 +191,20 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
           '/api/weather-tiles/wind/{z}/{x}/{y}.png',
           {
             attribution: '© OpenWeatherMap',
-            opacity: 0.6,
+            opacity: 0.8,
             maxZoom: 18,
+            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+            className: 'weather-overlay-wind'
           }
         );
+        
+        weatherLayersRef.current.windPatterns.on('tileerror', (e: any) => {
+          console.log('Wind tile error:', e);
+        });
+        
+        weatherLayersRef.current.windPatterns.on('tileload', (e: any) => {
+          console.log('Wind tile loaded:', e.tile?.src);
+        });
       }
       weatherLayersRef.current.windPatterns.addTo(map);
     } else if (weatherLayersRef.current.windPatterns) {

@@ -25,13 +25,22 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
 
   const handleLoadImagery = async () => {
     try {
-      // Use actual map bounds if available, otherwise fall back to center-based bounds
-      const bounds: [number, number, number, number] = currentBounds || [
-        mapState.center[1] - 0.1,
-        mapState.center[0] - 0.1,
-        mapState.center[1] + 0.1,
-        mapState.center[0] + 0.1,
-      ];
+      // Use actual map bounds if available, otherwise create bounds based on current zoom level
+      let bounds: [number, number, number, number];
+      
+      if (currentBounds) {
+        bounds = currentBounds;
+      } else {
+        // Calculate appropriate bounds based on zoom level
+        const latDiff = 1 / Math.pow(2, mapState.zoom - 8); // Adjust size based on zoom
+        const lngDiff = latDiff;
+        bounds = [
+          mapState.center[1] - lngDiff, // min longitude (west)
+          mapState.center[0] - latDiff, // min latitude (south)
+          mapState.center[1] + lngDiff, // max longitude (east)
+          mapState.center[0] + latDiff, // max latitude (north)
+        ];
+      }
 
       const requestParams: any = {
         bbox: bounds,
@@ -47,7 +56,9 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
         requestParams.dateTo = mapState.dateTo;
       }
 
+      console.log("Loading satellite imagery with bounds:", bounds);
       const result = await satelliteImagery.mutateAsync(requestParams);
+      console.log("Satellite imagery loaded successfully");
 
       // Store the satellite image in mapState so it can be displayed on the map
       updateMapState({ 

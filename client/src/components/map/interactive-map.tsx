@@ -96,16 +96,25 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
 
     // Add new satellite image if available
     if (mapState.satelliteImageUrl && mapState.satelliteImageBounds) {
+      // Ensure bounds are correctly ordered: [west, south, east, north]
+      const [west, south, east, north] = mapState.satelliteImageBounds;
+      
       const bounds = L.latLngBounds(
-        [mapState.satelliteImageBounds[1], mapState.satelliteImageBounds[0]], // southwest
-        [mapState.satelliteImageBounds[3], mapState.satelliteImageBounds[2]]  // northeast
+        [south, west], // southwest corner
+        [north, east]  // northeast corner
       );
 
       satelliteLayerRef.current = L.imageOverlay(
         mapState.satelliteImageUrl,
         bounds,
-        { opacity: 0.8 }
+        { 
+          opacity: 0.9,
+          interactive: false // Prevent the image from blocking map interactions
+        }
       ).addTo(mapRef.current);
+      
+      // Optionally fit the map to show the satellite image area
+      // mapRef.current.fitBounds(bounds, { padding: [20, 20] });
     }
   }, [mapState.satelliteImageUrl, mapState.satelliteImageBounds]);
 

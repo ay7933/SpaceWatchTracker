@@ -31,9 +31,6 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
         mapState.center[0] + 0.1,
       ];
 
-      console.log("Loading imagery with bounds:", bounds);
-      console.log("Current bounds from map:", currentBounds);
-
       const requestParams: any = {
         bbox: bounds,
         layer: mapState.selectedLayer,
@@ -49,11 +46,6 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
       }
 
       const result = await satelliteImagery.mutateAsync(requestParams);
-
-      console.log("Satellite imagery received:", { 
-        imageUrlLength: result.imageUrl.length,
-        bounds: bounds
-      });
 
       // Store the satellite image in mapState so it can be displayed on the map
       updateMapState({ 

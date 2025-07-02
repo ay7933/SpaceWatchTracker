@@ -1,0 +1,52 @@
+Here’s a clear description of what your SpaceWatch app **should display when different buttons are clicked** (assuming a typical feature set based on your requirements):
+
+### **1. Layer Selection Buttons**
+**What happens:**  
+- When a user clicks a specific layer button (e.g., “True Color,” “NDVI,” “Color Infrared”), the map updates to display satellite imagery using that visualization.
+- The legend and description for the selected layer are shown (e.g., “NDVI highlights vegetation health in green tones”).
+- Any previously displayed overlays or legends update to match the new layer.
+
+### **2. Date Picker / Time Range Selector**
+**What happens:**  
+- When a user selects a date or date range, the map reloads to show satellite imagery from that time period.
+- If the selected date has no available imagery, the app displays a message: “No imagery available for this date. Please select another date.”
+- Optionally, a time-lapse or comparison slider appears if a range is chosen.
+
+### **3. Location Search Button**
+**What happens:**  
+- When a user enters a place name or coordinates and clicks “Search,” the map pans and zooms to the specified location.
+- The app fetches and displays the latest satellite imagery and weather data for that area.
+- A marker or highlight appears on the searched location.
+
+### **4. Weather Overlay Toggle**
+**What happens:**  
+- When toggled on, a semi-transparent weather overlay appears on the map (showing temperature, precipitation, or cloud cover).
+- When toggled off, the overlay disappears, and only the satellite imagery remains.
+- The weather legend updates to explain the overlay’s colors or symbols.
+
+### **5. Download Image Button**
+**What happens:**  
+- When clicked, the current map view (with the selected layer and overlays) is exported as an image file (e.g., PNG or JPEG).
+- A download prompt appears, or the image is saved to the user’s device.
+
+### **6. Info or Help Button**
+**What happens:**  
+- When clicked, a modal or sidebar opens with explanations of each layer, how to use the app, and data sources.
+- May include tips for best results and troubleshooting steps.
+
+### **7. Reset or Home Button**
+**What happens:**  
+- The map resets to the default view (e.g., global view, default layer, no overlays).
+- All selections (date, location, overlays) return to their initial state.
+
+**Each button should provide immediate visual feedback (such as highlighting, loading spinners, or updated legends) to confirm the action to the user.**  
+This ensures the app is intuitive and responsive, supporting a smooth exploration of satellite and weather data.
+
+[1] https://intersog.com/blog/development/apple-watch-apps-ui-design-guide/
+[2] https://uxplanet.org/design-for-spatial-user-interfaces-4fa034dfbb81
+[3] https://uxdesign.cc/notes-and-tips-on-spatial-ui-ebfea009bfce
+[4] https://apps.apple.com/us/app/space-ui/id1494402514
+[5] https://docs.appspace.com/latest/intranet/user-manual/new-ui-elements/
+[6] https://docs.appspace.com/latest/digital-signage/configure-channel-browsing-theme-via-device-property/
+[7] https://spacejelly.dev/categories/ui-components
+[8] https://dribbble.com/tags/space-ui

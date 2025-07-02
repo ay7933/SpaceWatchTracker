@@ -96,9 +96,6 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
 
     // Add new satellite image if available
     if (mapState.satelliteImageUrl && mapState.satelliteImageBounds) {
-      console.log("Adding satellite overlay with bounds:", mapState.satelliteImageBounds);
-      console.log("Image URL length:", mapState.satelliteImageUrl.length);
-      
       const bounds = L.latLngBounds(
         [mapState.satelliteImageBounds[1], mapState.satelliteImageBounds[0]], // southwest
         [mapState.satelliteImageBounds[3], mapState.satelliteImageBounds[2]]  // northeast
@@ -109,13 +106,6 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
         bounds,
         { opacity: 0.8 }
       ).addTo(mapRef.current);
-
-      console.log("Satellite overlay added successfully");
-    } else {
-      console.log("No satellite image data available", { 
-        hasUrl: !!mapState.satelliteImageUrl, 
-        hasBounds: !!mapState.satelliteImageBounds 
-      });
     }
   }, [mapState.satelliteImageUrl, mapState.satelliteImageBounds]);
 

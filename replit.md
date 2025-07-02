@@ -116,6 +116,13 @@ Changelog:
   * Updated ImageInfo component to display actual band information
   * Fixed vegetation (NDVI) layer evalscript for proper visualization
   * Added complete download functionality for satellite imagery
+- July 02, 2025. Complete weather overlay system implemented:
+  * Fixed z-index issues for weather info card visibility
+  * Added temperature map overlay with color-coded heat visualization
+  * Implemented precipitation overlay showing rainfall intensity
+  * Added wind patterns overlay displaying wind speed and direction
+  * Created secure backend proxy endpoints for weather tile services
+  * All four weather overlays now fully functional with real OpenWeatherMap data
 ```
 
 ## User Preferences

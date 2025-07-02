@@ -21,6 +21,11 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const satelliteLayerRef = useRef<L.ImageOverlay | null>(null);
+  const weatherLayersRef = useRef<{
+    temperature?: L.TileLayer;
+    precipitation?: L.TileLayer;
+    windPatterns?: L.TileLayer;
+  }>({});
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -117,6 +122,73 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
       // mapRef.current.fitBounds(bounds, { padding: [20, 20] });
     }
   }, [mapState.satelliteImageUrl, mapState.satelliteImageBounds]);
+
+  // Handle weather overlays
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    const map = mapRef.current;
+
+    // Temperature layer
+    if (mapState.weatherOverlays.temperature) {
+      if (!weatherLayersRef.current.temperature) {
+        weatherLayersRef.current.temperature = L.tileLayer(
+          '/api/weather-tiles/temp/{z}/{x}/{y}.png',
+          {
+            attribution: '© OpenWeatherMap',
+            opacity: 0.6,
+            maxZoom: 18,
+          }
+        );
+      }
+      weatherLayersRef.current.temperature.addTo(map);
+    } else if (weatherLayersRef.current.temperature) {
+      map.removeLayer(weatherLayersRef.current.temperature);
+    }
+
+    // Precipitation layer
+    if (mapState.weatherOverlays.precipitation) {
+      if (!weatherLayersRef.current.precipitation) {
+        weatherLayersRef.current.precipitation = L.tileLayer(
+          '/api/weather-tiles/precipitation/{z}/{x}/{y}.png',
+          {
+            attribution: '© OpenWeatherMap',
+            opacity: 0.6,
+            maxZoom: 18,
+          }
+        );
+      }
+      weatherLayersRef.current.precipitation.addTo(map);
+    } else if (weatherLayersRef.current.precipitation) {
+      map.removeLayer(weatherLayersRef.current.precipitation);
+    }
+
+    // Wind patterns layer
+    if (mapState.weatherOverlays.windPatterns) {
+      if (!weatherLayersRef.current.windPatterns) {
+        weatherLayersRef.current.windPatterns = L.tileLayer(
+          '/api/weather-tiles/wind/{z}/{x}/{y}.png',
+          {
+            attribution: '© OpenWeatherMap',
+            opacity: 0.6,
+            maxZoom: 18,
+          }
+        );
+      }
+      weatherLayersRef.current.windPatterns.addTo(map);
+    } else if (weatherLayersRef.current.windPatterns) {
+      map.removeLayer(weatherLayersRef.current.windPatterns);
+    }
+
+    // Cleanup function
+    return () => {
+      Object.values(weatherLayersRef.current).forEach(layer => {
+        if (layer && map.hasLayer(layer)) {
+          map.removeLayer(layer);
+        }
+      });
+    };
+  }, [mapState.weatherOverlays]);
 
   return (
     <div className="w-full h-full relative">

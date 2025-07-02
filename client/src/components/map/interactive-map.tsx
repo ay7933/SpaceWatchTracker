@@ -19,6 +19,7 @@ interface InteractiveMapProps {
 export function InteractiveMap({ mapState, onMapChange }: InteractiveMapProps) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const satelliteLayerRef = useRef<L.ImageOverlay | null>(null);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -70,6 +71,34 @@ export function InteractiveMap({ mapState, onMapChange }: InteractiveMapProps) {
       }
     }
   }, [mapState.center, mapState.zoom]);
+
+  // Handle satellite image overlay
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    // Remove existing satellite layer
+    if (satelliteLayerRef.current) {
+      mapRef.current.removeLayer(satelliteLayerRef.current);
+      satelliteLayerRef.current = null;
+    }
+
+    // Add new satellite image if available
+    if (mapState.satelliteImageUrl && mapState.satelliteImageBounds) {
+      const bounds = L.latLngBounds(
+        [mapState.satelliteImageBounds[1], mapState.satelliteImageBounds[0]], // southwest
+        [mapState.satelliteImageBounds[3], mapState.satelliteImageBounds[2]]  // northeast
+      );
+
+      satelliteLayerRef.current = L.imageOverlay(
+        mapState.satelliteImageUrl,
+        bounds,
+        { opacity: 0.8 }
+      ).addTo(mapRef.current);
+
+      // Fit the map to show the satellite image
+      mapRef.current.fitBounds(bounds);
+    }
+  }, [mapState.satelliteImageUrl, mapState.satelliteImageBounds]);
 
   return (
     <div className="w-full h-full relative">

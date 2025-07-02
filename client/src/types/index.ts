@@ -44,6 +44,8 @@ export interface MapState {
     windPatterns: boolean;
   };
   imageSettings: ImageSettings;
+  satelliteImageUrl?: string;
+  satelliteImageBounds?: [number, number, number, number];
 }
 
 export interface SatelliteImageResponse {

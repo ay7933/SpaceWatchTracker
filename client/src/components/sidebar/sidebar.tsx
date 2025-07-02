@@ -30,14 +30,26 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose 
         mapState.center[0] + 0.1,
       ];
 
-      await satelliteImagery.mutateAsync({
+      const requestParams: any = {
         bbox: mockBounds,
         layer: mapState.selectedLayer,
         width: 1024,
         height: 1024,
-        dateFrom: mapState.dateFrom,
-        dateTo: mapState.dateTo,
         maxCloudCoverage: mapState.imageSettings.cloudCoverage,
+      };
+
+      // Only add date parameters if they are set
+      if (mapState.dateFrom && mapState.dateTo) {
+        requestParams.dateFrom = mapState.dateFrom;
+        requestParams.dateTo = mapState.dateTo;
+      }
+
+      const result = await satelliteImagery.mutateAsync(requestParams);
+
+      // Store the satellite image in mapState so it can be displayed on the map
+      updateMapState({ 
+        satelliteImageUrl: result.imageUrl,
+        satelliteImageBounds: mockBounds 
       });
 
       toast({

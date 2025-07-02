@@ -1,0 +1,133 @@
+import { LocationSearch } from './location-search';
+import { LayerSelector } from './layer-selector';
+import { DateRangePicker } from './date-range-picker';
+import { WeatherOverlay } from './weather-overlay';
+import { ImageSettings } from './image-settings';
+import { Button } from '@/components/ui/button';
+import { useSatelliteImagery } from '@/hooks/use-satellite-imagery';
+import { useToast } from '@/hooks/use-toast';
+import { Satellite, Download, Search } from 'lucide-react';
+import type { MapState } from '@/types';
+
+interface SidebarProps {
+  mapState: MapState;
+  updateMapState: (updates: Partial<MapState>) => void;
+  isMobileOpen: boolean;
+  onMobileClose: () => void;
+}
+
+export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose }: SidebarProps) {
+  const { toast } = useToast();
+  const satelliteImagery = useSatelliteImagery();
+
+  const handleLoadImagery = async () => {
+    try {
+      // This would typically use the current map bounds
+      const mockBounds: [number, number, number, number] = [
+        mapState.center[1] - 0.1,
+        mapState.center[0] - 0.1,
+        mapState.center[1] + 0.1,
+        mapState.center[0] + 0.1,
+      ];
+
+      await satelliteImagery.mutateAsync({
+        bbox: mockBounds,
+        layer: mapState.selectedLayer,
+        width: 1024,
+        height: 1024,
+        dateFrom: mapState.dateFrom,
+        dateTo: mapState.dateTo,
+        maxCloudCoverage: mapState.imageSettings.cloudCoverage,
+      });
+
+      toast({
+        title: "Imagery Loaded",
+        description: "Satellite imagery has been updated successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load satellite imagery. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDownloadImage = () => {
+    // Implement download functionality
+    toast({
+      title: "Download",
+      description: "Image download will be implemented with map capture.",
+    });
+  };
+
+  const handleLocationSelect = (lat: number, lon: number) => {
+    updateMapState({ center: [lat, lon] });
+    onMobileClose();
+  };
+
+  return (
+    <>
+      <div className={`
+        w-80 bg-surface border-r border-border flex flex-col shadow-xl z-10 transition-all duration-300
+        ${isMobileOpen ? 'mobile-sidebar open' : 'mobile-sidebar'}
+        lg:transform-none lg:relative lg:translate-x-0
+      `}>
+        {/* Header */}
+        <div className="p-6 border-b border-border">
+          <div className="flex items-center space-x-3 mb-6">
+            <Satellite className="text-primary text-2xl" size={24} />
+            <h1 className="text-xl font-bold text-text-primary">SpaceWatch</h1>
+          </div>
+          
+          <LocationSearch onLocationSelect={handleLocationSelect} />
+        </div>
+
+        {/* Controls Section */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+          <LayerSelector
+            selectedLayer={mapState.selectedLayer}
+            onLayerChange={(layer) => updateMapState({ selectedLayer: layer })}
+          />
+
+          <DateRangePicker
+            dateFrom={mapState.dateFrom}
+            dateTo={mapState.dateTo}
+            onDateChange={(dateFrom, dateTo) => updateMapState({ dateFrom, dateTo })}
+          />
+
+          <WeatherOverlay
+            overlays={mapState.weatherOverlays}
+            onOverlayChange={(overlays) => updateMapState({ weatherOverlays: overlays })}
+          />
+
+          <ImageSettings
+            settings={mapState.imageSettings}
+            onSettingsChange={(settings) => updateMapState({ imageSettings: settings })}
+          />
+        </div>
+
+        {/* Action Buttons */}
+        <div className="p-6 border-t border-border space-y-3">
+          <Button 
+            onClick={handleLoadImagery}
+            disabled={satelliteImagery.isPending}
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+          >
+            <Search className="mr-2" size={16} />
+            {satelliteImagery.isPending ? 'Loading...' : 'Load Imagery'}
+          </Button>
+          
+          <Button 
+            onClick={handleDownloadImage}
+            variant="secondary"
+            className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground font-medium"
+          >
+            <Download className="mr-2" size={16} />
+            Download Image
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+}

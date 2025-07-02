@@ -14,16 +14,17 @@ interface SidebarProps {
   updateMapState: (updates: Partial<MapState>) => void;
   isMobileOpen: boolean;
   onMobileClose: () => void;
+  currentBounds?: [number, number, number, number] | null;
 }
 
-export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose }: SidebarProps) {
+export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose, currentBounds }: SidebarProps) {
   const { toast } = useToast();
   const satelliteImagery = useSatelliteImagery();
 
   const handleLoadImagery = async () => {
     try {
-      // This would typically use the current map bounds
-      const mockBounds: [number, number, number, number] = [
+      // Use actual map bounds if available, otherwise fall back to center-based bounds
+      const bounds: [number, number, number, number] = currentBounds || [
         mapState.center[1] - 0.1,
         mapState.center[0] - 0.1,
         mapState.center[1] + 0.1,
@@ -31,7 +32,7 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose 
       ];
 
       const requestParams: any = {
-        bbox: mockBounds,
+        bbox: bounds,
         layer: mapState.selectedLayer,
         width: 1024,
         height: 1024,
@@ -49,7 +50,7 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose 
       // Store the satellite image in mapState so it can be displayed on the map
       updateMapState({ 
         satelliteImageUrl: result.imageUrl,
-        satelliteImageBounds: mockBounds 
+        satelliteImageBounds: bounds 
       });
 
       toast({

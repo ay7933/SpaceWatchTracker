@@ -26,6 +26,7 @@ export default function Home() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [coordinates, setCoordinates] = useState({ lat: 37.7749, lng: -122.4194 });
+  const [currentBounds, setCurrentBounds] = useState<[number, number, number, number] | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -58,6 +59,7 @@ export default function Home() {
         updateMapState={updateMapState}
         isMobileOpen={isMobileMenuOpen}
         onMobileClose={() => setIsMobileMenuOpen(false)}
+        currentBounds={currentBounds}
       />
 
       {/* Main content */}
@@ -76,6 +78,7 @@ export default function Home() {
             updateMapState({ center, zoom });
             setCoordinates({ lat: center[0], lng: center[1] });
           }}
+          onBoundsChange={setCurrentBounds}
         />
 
         <WeatherInfo

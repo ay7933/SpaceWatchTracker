@@ -14,9 +14,10 @@ L.Icon.Default.mergeOptions({
 interface InteractiveMapProps {
   mapState: MapState;
   onMapChange: (center: [number, number], zoom: number) => void;
+  onBoundsChange?: (bounds: [number, number, number, number]) => void;
 }
 
-export function InteractiveMap({ mapState, onMapChange }: InteractiveMapProps) {
+export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: InteractiveMapProps) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const satelliteLayerRef = useRef<L.ImageOverlay | null>(null);
@@ -36,15 +37,26 @@ export function InteractiveMap({ mapState, onMapChange }: InteractiveMapProps) {
     }).addTo(map);
 
     // Handle map events
-    map.on('moveend', () => {
+    const updateMapData = () => {
       const center = map.getCenter();
+      const bounds = map.getBounds();
       onMapChange([center.lat, center.lng], map.getZoom());
-    });
+      
+      if (onBoundsChange) {
+        onBoundsChange([
+          bounds.getWest(), // min longitude
+          bounds.getSouth(), // min latitude  
+          bounds.getEast(), // max longitude
+          bounds.getNorth() // max latitude
+        ]);
+      }
+    };
 
-    map.on('zoomend', () => {
-      const center = map.getCenter();
-      onMapChange([center.lat, center.lng], map.getZoom());
-    });
+    map.on('moveend', updateMapData);
+    map.on('zoomend', updateMapData);
+    
+    // Initial bounds update
+    updateMapData();
 
     mapRef.current = map;
 

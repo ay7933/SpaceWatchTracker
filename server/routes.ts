@@ -32,7 +32,15 @@ async function getSentinelHubToken(): Promise<string> {
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to get Sentinel Hub token: ${response.statusText}`);
+    const errorText = await response.text();
+    console.error("Sentinel Hub OAuth error:", {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText,
+      clientId: SENTINEL_HUB_CLIENT_ID ? 'present' : 'missing',
+      clientSecret: SENTINEL_HUB_CLIENT_SECRET ? 'present' : 'missing'
+    });
+    throw new Error(`Failed to get Sentinel Hub token: ${response.statusText} - ${errorText}`);
   }
 
   const data = await response.json();

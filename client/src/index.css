@@ -148,9 +148,10 @@ input[type="range"] {
 }
 
 .weather-overlay-wind {
-  mix-blend-mode: multiply;
+  mix-blend-mode: screen;
   pointer-events: none;
-  filter: contrast(2.0) saturate(2.0) brightness(1.4) invert(0.1);
+  filter: contrast(4.0) saturate(4.0) brightness(3.0) invert(0.8) hue-rotate(270deg);
+  opacity: 0.8;
 }
 
 /* Leaflet weather tile layer ordering */

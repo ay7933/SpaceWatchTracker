@@ -224,7 +224,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/weather-tiles/precipitation/:z/:x/:y.png", async (req, res) => {
     try {
       const { z, x, y } = req.params;
-      const tileUrl = `https://tile.openweathermap.org/map/precipitation_new/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
+      const tileUrl = `https://tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
 
       const response = await fetch(tileUrl);
       if (!response.ok) throw new Error('Weather tile fetch failed');
@@ -241,7 +241,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/weather-tiles/wind/:z/:x/:y.png", async (req, res) => {
     try {
       const { z, x, y } = req.params;
-      const tileUrl = `https://tile.openweathermap.org/map/wind/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
+      const tileUrl = `https://tile.openweathermap.org/map/wind_new/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
 
       const response = await fetch(tileUrl);
       if (!response.ok) throw new Error('Weather tile fetch failed');

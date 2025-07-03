@@ -33,8 +33,8 @@ export function WeatherOverlay({ overlays, onOverlayChange }: WeatherOverlayProp
     },
     { 
       key: 'windPatterns' as const, 
-      label: 'Wind Patterns',
-      description: 'Flow patterns show wind direction and speed'
+      label: 'Wind Arrows',
+      description: 'Directional arrows show wind direction and speed'
     },
   ];
 

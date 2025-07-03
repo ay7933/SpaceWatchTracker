@@ -69,14 +69,14 @@ const geocodeRequestSchema = z.object({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  
+
   // Satellite imagery endpoint
   app.post("/api/satellite", async (req, res) => {
     try {
       const { bbox, layer, width, height, dateFrom, dateTo, maxCloudCoverage } = satelliteRequestSchema.parse(req.body);
-      
+
       const cacheKey = `satellite_${bbox.join('_')}_${layer}_${width}x${height}_${dateFrom || 'latest'}_${dateTo || 'latest'}`;
-      
+
       // Check cache first
       const cached = await storage.getCachedImage(cacheKey);
       if (cached) {
@@ -84,7 +84,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const token = await getSentinelHubToken();
-      
+
       // Build Sentinel Hub request
       const requestBody = {
         input: {
@@ -148,7 +148,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const imageBuffer = await response.arrayBuffer();
       const base64Image = `data:image/png;base64,${Buffer.from(imageBuffer).toString('base64')}`;
-      
+
       // Cache the result
       await storage.setCachedImage({
         cacheKey,
@@ -173,7 +173,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/weather", async (req, res) => {
     try {
       const { lat, lon } = weatherRequestSchema.parse(req.query);
-      
+
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=metric`
       );
@@ -183,7 +183,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const data = await response.json();
-      
+
       res.json({
         temperature: Math.round(data.main.temp),
         humidity: data.main.humidity,
@@ -208,10 +208,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { z, x, y } = req.params;
       const tileUrl = `https://tile.openweathermap.org/map/temp_new/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
-      
+
       const response = await fetch(tileUrl);
       if (!response.ok) throw new Error('Weather tile fetch failed');
-      
+
       const buffer = await response.arrayBuffer();
       res.set('Content-Type', 'image/png');
       res.set('Cache-Control', 'public, max-age=300'); // Cache for 5 minutes
@@ -225,10 +225,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { z, x, y } = req.params;
       const tileUrl = `https://tile.openweathermap.org/map/precipitation_new/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
-      
+
       const response = await fetch(tileUrl);
       if (!response.ok) throw new Error('Weather tile fetch failed');
-      
+
       const buffer = await response.arrayBuffer();
       res.set('Content-Type', 'image/png');
       res.set('Cache-Control', 'public, max-age=300');
@@ -241,28 +241,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/weather-tiles/wind/:z/:x/:y.png", async (req, res) => {
     try {
       const { z, x, y } = req.params;
-      const tileUrl = `https://tile.openweathermap.org/map/wind_new/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
-      
-      const response = await fetch(tileUrl);
-      if (!response.ok) throw new Error('Weather tile fetch failed');
-      
-      const buffer = await response.arrayBuffer();
-      res.set('Content-Type', 'image/png');
-      res.set('Cache-Control', 'public, max-age=300');
-      res.send(Buffer.from(buffer));
-    } catch (error) {
-      res.status(404).send('Weather tile not found');
-    }
-  });
+      const tileUrl = `https://tile.openweathermap.org/map/wind/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
 
-  app.get("/api/weather-tiles/wind/:z/:x/:y.png", async (req, res) => {
-    try {
-      const { z, x, y } = req.params;
-      const tileUrl = `https://tile.openweathermap.org/map/wind_new/${z}/${x}/${y}.png?appid=${OPENWEATHER_API_KEY}`;
-      
       const response = await fetch(tileUrl);
       if (!response.ok) throw new Error('Weather tile fetch failed');
-      
+
       const buffer = await response.arrayBuffer();
       res.set('Content-Type', 'image/png');
       res.set('Cache-Control', 'public, max-age=300');
@@ -276,7 +259,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/geocode", async (req, res) => {
     try {
       const { query } = geocodeRequestSchema.parse(req.query);
-      
+
       const response = await fetch(
         `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${OPENWEATHER_API_KEY}`
       );
@@ -286,7 +269,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const data = await response.json();
-      
+
       const results = data.map((item: any) => ({
         name: item.name,
         country: item.country,

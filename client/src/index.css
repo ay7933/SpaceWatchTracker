@@ -141,17 +141,8 @@ input[type="range"] {
   filter: contrast(1.3) saturate(1.5);
 }
 
-.weather-overlay-precipitation {
-  mix-blend-mode: screen;
-  pointer-events: none;
-  filter: contrast(50) saturate(10) brightness(10) hue-rotate(120deg) invert(0.5);
-  opacity: 1;
-  background-color: rgba(0, 255, 100, 0.1);
-}
-
 /* Leaflet weather tile layer ordering */
 .leaflet-tile-pane .weather-overlay-temp,
-.leaflet-tile-pane .weather-overlay-precipitation, 
 .leaflet-tile-pane .weather-overlay-wind {
   z-index: 200 !important;
 }

@@ -40,7 +40,6 @@ export interface MapState {
   weatherOverlays: {
     currentWeather: boolean;
     temperature: boolean;
-    precipitation: boolean;
     windPatterns: boolean;
   };
   imageSettings: ImageSettings;

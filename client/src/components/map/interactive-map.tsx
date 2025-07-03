@@ -157,32 +157,7 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
       map.removeLayer(weatherLayersRef.current.temperature);
     }
 
-    // Precipitation layer
-    if (mapState.weatherOverlays.precipitation) {
-      if (!weatherLayersRef.current.precipitation) {
-        weatherLayersRef.current.precipitation = L.tileLayer(
-          '/api/weather-tiles/precipitation/{z}/{x}/{y}.png',
-          {
-            attribution: '© OpenWeatherMap',
-            opacity: 0.9,
-            maxZoom: 18,
-            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-            className: 'weather-overlay-precipitation'
-          }
-        );
-        
-        weatherLayersRef.current.precipitation.on('tileerror', (e: any) => {
-          console.log('Precipitation tile error:', e);
-        });
-        
-        weatherLayersRef.current.precipitation.on('tileload', (e: any) => {
-          console.log('Precipitation tile loaded:', e.tile?.src);
-        });
-      }
-      weatherLayersRef.current.precipitation.addTo(map);
-    } else if (weatherLayersRef.current.precipitation) {
-      map.removeLayer(weatherLayersRef.current.precipitation);
-    }
+    
 
     
 

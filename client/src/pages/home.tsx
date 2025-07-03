@@ -14,7 +14,6 @@ export default function Home() {
     weatherOverlays: {
       currentWeather: false,
       temperature: false,
-      precipitation: false,
       windPatterns: false,
     },
     imageSettings: {

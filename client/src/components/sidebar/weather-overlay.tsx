@@ -26,11 +26,6 @@ export function WeatherOverlay({ overlays, onOverlayChange }: WeatherOverlayProp
       label: 'Temperature',
       description: 'Red/orange = warm areas, blue = cold areas'
     },
-    { 
-      key: 'precipitation' as const, 
-      label: 'Precipitation',
-      description: 'Blue/cyan patterns show rainfall intensity'
-    },
   ];
 
   return (

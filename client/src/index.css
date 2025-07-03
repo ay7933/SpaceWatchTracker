@@ -142,10 +142,10 @@ input[type="range"] {
 }
 
 .weather-overlay-precipitation {
-  mix-blend-mode: screen;
+  mix-blend-mode: normal;
   pointer-events: none;
-  filter: contrast(4.0) saturate(4.0) brightness(3.0) hue-rotate(240deg) invert(1);
-  opacity: 1.0;
+  filter: contrast(10.0) saturate(8.0) brightness(5.0) hue-rotate(200deg);
+  opacity: 0.8;
 }
 
 /* Leaflet weather tile layer ordering */

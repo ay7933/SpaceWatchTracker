@@ -184,32 +184,7 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
       map.removeLayer(weatherLayersRef.current.precipitation);
     }
 
-    // Wind patterns layer
-    if (mapState.weatherOverlays.windPatterns) {
-      if (!weatherLayersRef.current.windPatterns) {
-        weatherLayersRef.current.windPatterns = L.tileLayer(
-          '/api/weather-tiles/wind/{z}/{x}/{y}.png',
-          {
-            attribution: '© OpenWeatherMap',
-            opacity: 0.9,
-            maxZoom: 18,
-            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-            className: 'weather-overlay-wind'
-          }
-        );
-        
-        weatherLayersRef.current.windPatterns.on('tileerror', (e: any) => {
-          console.log('Wind tile error:', e);
-        });
-        
-        weatherLayersRef.current.windPatterns.on('tileload', (e: any) => {
-          console.log('Wind tile loaded:', e.tile?.src);
-        });
-      }
-      weatherLayersRef.current.windPatterns.addTo(map);
-    } else if (weatherLayersRef.current.windPatterns) {
-      map.removeLayer(weatherLayersRef.current.windPatterns);
-    }
+    
 
     // Cleanup function
     return () => {

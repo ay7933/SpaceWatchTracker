@@ -29,12 +29,7 @@ export function WeatherOverlay({ overlays, onOverlayChange }: WeatherOverlayProp
     { 
       key: 'precipitation' as const, 
       label: 'Precipitation',
-      description: 'Blue/green patterns show rainfall intensity'
-    },
-    { 
-      key: 'windPatterns' as const, 
-      label: 'Wind Arrows',
-      description: 'Directional arrows show wind direction and speed'
+      description: 'Blue/cyan patterns show rainfall intensity'
     },
   ];
 

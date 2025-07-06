@@ -21,11 +21,14 @@ export const AVAILABLE_LAYERS: LayerInfo[] = [
     bands: 'B04 (Red), B03 (Green), B02 (Blue)',
     visualization: 'Displays landscapes in realistic colors',
     colorKey: [
-      { color: '#228B22', meaning: 'Forests and vegetation' },
-      { color: '#4169E1', meaning: 'Water bodies' },
-      { color: '#808080', meaning: 'Urban areas and buildings' },
-      { color: '#DEB887', meaning: 'Bare soil and desert' },
-      { color: '#FFFFFF', meaning: 'Clouds and snow' }
+      { color: '#0F4C0F', meaning: 'Dense forests and healthy vegetation' },
+      { color: '#228B22', meaning: 'Grasslands and croplands' },
+      { color: '#1E90FF', meaning: 'Deep water bodies' },
+      { color: '#87CEEB', meaning: 'Shallow water and coastlines' },
+      { color: '#696969', meaning: 'Urban areas and concrete' },
+      { color: '#DEB887', meaning: 'Desert and bare soil' },
+      { color: '#F5F5DC', meaning: 'Sandy beaches and dunes' },
+      { color: '#FFFFFF', meaning: 'Clouds and snow cover' }
     ],
     bestFor: ['General overview', 'Urban planning', 'Natural disaster assessment']
   },
@@ -37,11 +40,13 @@ export const AVAILABLE_LAYERS: LayerInfo[] = [
     bands: 'B08 (NIR), B04 (Red)',
     visualization: 'Calculated as (B08-B04)/(B08+B04)',
     colorKey: [
-      { color: '#006400', meaning: 'Dense, healthy vegetation' },
-      { color: '#90EE90', meaning: 'Moderate vegetation' },
-      { color: '#FFFF00', meaning: 'Sparse vegetation' },
-      { color: '#CD853F', meaning: 'Stressed or dying plants' },
-      { color: '#8B4513', meaning: 'Bare soil or no vegetation' }
+      { color: '#006400', meaning: 'Very healthy vegetation (NDVI > 0.6)' },
+      { color: '#32CD32', meaning: 'Healthy vegetation (NDVI 0.4-0.6)' },
+      { color: '#9ACD32', meaning: 'Moderate vegetation (NDVI 0.2-0.4)' },
+      { color: '#FFFF00', meaning: 'Sparse vegetation (NDVI 0.1-0.2)' },
+      { color: '#DEB887', meaning: 'Very sparse/stressed (NDVI 0-0.1)' },
+      { color: '#8B4513', meaning: 'Bare soil/rock (NDVI < 0)' },
+      { color: '#0000FF', meaning: 'Water bodies (NDVI < -0.1)' }
     ],
     bestFor: ['Crop monitoring', 'Forest health', 'Environmental studies']
   },
@@ -69,10 +74,13 @@ export const AVAILABLE_LAYERS: LayerInfo[] = [
     bands: 'B08 (NIR), B04 (Red), B03 (Green)',
     visualization: 'Healthy vegetation appears bright red',
     colorKey: [
-      { color: '#FF0000', meaning: 'Healthy, dense vegetation' },
+      { color: '#DC143C', meaning: 'Very healthy, dense vegetation' },
+      { color: '#FF6347', meaning: 'Healthy vegetation and crops' },
       { color: '#FF69B4', meaning: 'Moderate vegetation' },
-      { color: '#0000FF', meaning: 'Water bodies' },
-      { color: '#FFFFFF', meaning: 'Clouds and built areas' },
+      { color: '#FFB6C1', meaning: 'Sparse or stressed vegetation' },
+      { color: '#000080', meaning: 'Deep water bodies' },
+      { color: '#4169E1', meaning: 'Shallow water' },
+      { color: '#C0C0C0', meaning: 'Urban areas and buildings' },
       { color: '#8B4513', meaning: 'Bare soil and rock' }
     ],
     bestFor: ['Vegetation mapping', 'Forest analysis', 'Land use classification']

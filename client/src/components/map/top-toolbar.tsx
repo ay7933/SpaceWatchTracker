@@ -19,7 +19,7 @@ export function TopToolbar({ coordinates, zoom, onMenuToggle, onZoomIn, onZoomOu
   };
 
   return (
-    <div className="absolute top-0 left-0 right-0 z-20 bg-surface/90 backdrop-blur-sm border-b border-border p-4">
+    <div className="absolute top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           {/* Mobile menu toggle */}

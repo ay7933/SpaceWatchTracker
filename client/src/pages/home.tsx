@@ -26,6 +26,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [coordinates, setCoordinates] = useState({ lat: 37.7749, lng: -122.4194 });
   const [currentBounds, setCurrentBounds] = useState<[number, number, number, number] | null>(null);
+  const [isLoadingImagery, setIsLoadingImagery] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -47,7 +48,7 @@ export default function Home() {
       {/* Mobile overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -59,6 +60,7 @@ export default function Home() {
         isMobileOpen={isMobileMenuOpen}
         onMobileClose={() => setIsMobileMenuOpen(false)}
         currentBounds={currentBounds}
+        onLoadingChange={setIsLoadingImagery}
       />
 
       {/* Main content */}
@@ -78,6 +80,7 @@ export default function Home() {
             setCoordinates({ lat: center[0], lng: center[1] });
           }}
           onBoundsChange={setCurrentBounds}
+          isLoading={isLoadingImagery}
         />
 
         <WeatherInfo

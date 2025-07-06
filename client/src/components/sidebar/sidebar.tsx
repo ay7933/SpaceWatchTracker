@@ -4,11 +4,13 @@ import { DateRangePicker } from './date-range-picker';
 import { WeatherOverlay } from './weather-overlay';
 import { ImageSettings } from './image-settings';
 import { LayerInfo } from './layer-info';
+import { LayerColorKey } from './layer-color-key';
 import { BandsReference } from './bands-reference';
 import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useSatelliteImagery } from '@/hooks/use-satellite-imagery';
 import { useToast } from '@/hooks/use-toast';
-import { Satellite, Download, Search } from 'lucide-react';
+import { Satellite, Download, Search, AlertTriangle, Clock } from 'lucide-react';
 import type { MapState } from '@/types';
 
 interface SidebarProps {
@@ -17,14 +19,52 @@ interface SidebarProps {
   isMobileOpen: boolean;
   onMobileClose: () => void;
   currentBounds?: [number, number, number, number] | null;
+  onLoadingChange?: (loading: boolean) => void;
 }
 
-export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose, currentBounds }: SidebarProps) {
+export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose, currentBounds, onLoadingChange }: SidebarProps) {
   const { toast } = useToast();
   const satelliteImagery = useSatelliteImagery();
 
+  const calculateAreaSizeKm = (bounds: [number, number, number, number]) => {
+    const [west, south, east, north] = bounds;
+    const widthKm = Math.abs(east - west) * 111.32 * Math.cos((south + north) / 2 * Math.PI / 180);
+    const heightKm = Math.abs(north - south) * 110.54;
+    return widthKm * heightKm;
+  };
+
+  const getAreaWarning = () => {
+    if (!currentBounds) return null;
+    
+    const areaKm = calculateAreaSizeKm(currentBounds);
+    const isHighRes = mapState.imageSettings.resolution === 10;
+    
+    if (areaKm > 10000 && isHighRes) {
+      return {
+        type: 'warning' as const,
+        title: 'Large Area + High Resolution',
+        message: `This area is ${Math.round(areaKm).toLocaleString()} km². High resolution imagery may take 2-5 minutes to load or fail. Consider using 20m resolution or zooming in.`
+      };
+    } else if (areaKm > 25000) {
+      return {
+        type: 'warning' as const,
+        title: 'Very Large Area',
+        message: `This area is ${Math.round(areaKm).toLocaleString()} km². The satellite may not capture areas this large in a single image. Consider zooming in for better results.`
+      };
+    } else if (areaKm > 5000 && isHighRes) {
+      return {
+        type: 'info' as const,
+        title: 'Large Area',
+        message: `This area is ${Math.round(areaKm).toLocaleString()} km². High resolution imagery may take 1-2 minutes to load.`
+      };
+    }
+    return null;
+  };
+
   const handleLoadImagery = async () => {
     try {
+      onLoadingChange?.(true);
+      
       // Use actual map bounds if available, otherwise create bounds based on current zoom level
       let bounds: [number, number, number, number];
       
@@ -72,12 +112,24 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
         title: "Imagery Loaded",
         description: "Satellite imagery has been updated successfully.",
       });
-    } catch (error) {
+    } catch (error: any) {
+      let errorMessage = "Failed to load satellite imagery. Please try again.";
+      
+      if (error.message?.includes('timeout')) {
+        errorMessage = "Request timed out. The area may be too large or the resolution too high. Try zooming in or using lower resolution.";
+      } else if (error.message?.includes('too large')) {
+        errorMessage = "The requested area is too large for satellite capture. Please zoom in to a smaller area.";
+      } else if (error.message?.includes('no data')) {
+        errorMessage = "No satellite data available for this area and time period. Try adjusting the date range or cloud coverage settings.";
+      }
+
       toast({
-        title: "Error",
-        description: "Failed to load satellite imagery. Please try again.",
+        title: "Error Loading Imagery",
+        description: errorMessage,
         variant: "destructive",
       });
+    } finally {
+      onLoadingChange?.(false);
     }
   };
 
@@ -112,7 +164,7 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
   return (
     <>
       <div className={`
-        w-80 bg-surface border-r border-border flex flex-col shadow-xl transition-all duration-300
+        w-80 bg-surface border-r border-border flex flex-col shadow-xl transition-all duration-300 z-40
         ${isMobileOpen ? 'mobile-sidebar open' : 'mobile-sidebar'}
         lg:transform-none lg:relative lg:translate-x-0 lg:z-auto
       `}>
@@ -151,11 +203,30 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
 
           <LayerInfo selectedLayer={mapState.selectedLayer} />
 
+          <LayerColorKey selectedLayer={mapState.selectedLayer} />
+
           <BandsReference />
         </div>
 
         {/* Action Buttons */}
         <div className="p-6 border-t border-border space-y-3">
+          {/* Area size warning */}
+          {getAreaWarning() && (
+            <Alert className={getAreaWarning()?.type === 'warning' ? 'border-amber-600' : 'border-blue-600'}>
+              {getAreaWarning()?.type === 'warning' ? (
+                <AlertTriangle className="h-4 w-4" />
+              ) : (
+                <Clock className="h-4 w-4" />
+              )}
+              <AlertDescription>
+                <div className="space-y-1">
+                  <p className="font-medium text-xs">{getAreaWarning()?.title}</p>
+                  <p className="text-xs">{getAreaWarning()?.message}</p>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
+
           <Button 
             onClick={handleLoadImagery}
             disabled={satelliteImagery.isPending}

@@ -15,9 +15,10 @@ interface InteractiveMapProps {
   mapState: MapState;
   onMapChange: (center: [number, number], zoom: number) => void;
   onBoundsChange?: (bounds: [number, number, number, number]) => void;
+  isLoading?: boolean;
 }
 
-export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: InteractiveMapProps) {
+export function InteractiveMap({ mapState, onMapChange, onBoundsChange, isLoading }: InteractiveMapProps) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const satelliteLayerRef = useRef<L.ImageOverlay | null>(null);
@@ -176,14 +177,19 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange }: Intera
       <div ref={containerRef} className="w-full h-full" />
       
       {/* Loading overlay */}
-      <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-30 hidden" id="loading-overlay">
-        <div className="bg-surface rounded-lg p-6 shadow-xl">
-          <div className="flex items-center space-x-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-            <span className="text-text-primary">Loading satellite imagery...</span>
+      {isLoading && (
+        <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-45">
+          <div className="bg-surface rounded-lg p-6 shadow-xl">
+            <div className="flex items-center space-x-3">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+              <div className="text-text-primary">
+                <p className="font-medium">Loading satellite imagery...</p>
+                <p className="text-sm text-text-secondary mt-1">This may take a few moments</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Menu, Plus, Minus, Maximize, Layers } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface TopToolbarProps {
   coordinates: { lat: number; lng: number };
@@ -10,6 +11,24 @@ interface TopToolbarProps {
 }
 
 export function TopToolbar({ coordinates, zoom, onMenuToggle, onZoomIn, onZoomOut }: TopToolbarProps) {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
   const handleFullscreen = () => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -19,7 +38,9 @@ export function TopToolbar({ coordinates, zoom, onMenuToggle, onZoomIn, onZoomOu
   };
 
   return (
-    <div className="absolute top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border p-4">
+    <div className={`absolute top-0 left-0 right-0 bg-surface/90 backdrop-blur-sm border-b border-border p-4 top-toolbar ${
+      isFullscreen ? 'z-[9999] fixed' : 'z-50'
+    }`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           {/* Mobile menu toggle */}

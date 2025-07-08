@@ -113,6 +113,35 @@ input[type="range"] {
   z-index: 40;
 }
 
+/* Fullscreen top toolbar visibility */
+:fullscreen .top-toolbar {
+  z-index: 999 !important;
+  position: fixed !important;
+}
+
+:-webkit-full-screen .top-toolbar {
+  z-index: 999 !important;
+  position: fixed !important;
+}
+
+:-moz-full-screen .top-toolbar {
+  z-index: 999 !important;
+  position: fixed !important;
+}
+
+/* Ensure fullscreen elements don't interfere */
+:fullscreen {
+  background: hsl(240, 5%, 6%);
+}
+
+:-webkit-full-screen {
+  background: hsl(240, 5%, 6%);
+}
+
+:-moz-full-screen {
+  background: hsl(240, 5%, 6%);
+}
+
 /* Map container full height */
 .map-container {
   position: relative;

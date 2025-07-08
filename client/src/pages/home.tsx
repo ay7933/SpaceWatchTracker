@@ -65,14 +65,6 @@ export default function Home() {
 
       {/* Main content */}
       <div className="flex-1 relative">
-        <TopToolbar
-          coordinates={coordinates}
-          zoom={mapState.zoom}
-          onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          onZoomIn={() => updateMapState({ zoom: Math.min(mapState.zoom + 1, 18) })}
-          onZoomOut={() => updateMapState({ zoom: Math.max(mapState.zoom - 1, 1) })}
-        />
-
         <InteractiveMap
           mapState={mapState}
           onMapChange={(center, zoom) => {
@@ -81,6 +73,14 @@ export default function Home() {
           }}
           onBoundsChange={setCurrentBounds}
           isLoading={isLoadingImagery}
+        />
+        
+        <TopToolbar
+          coordinates={coordinates}
+          zoom={mapState.zoom}
+          onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onZoomIn={() => updateMapState({ zoom: Math.min(mapState.zoom + 1, 18) })}
+          onZoomOut={() => updateMapState({ zoom: Math.max(mapState.zoom - 1, 1) })}
         />
 
         <WeatherInfo

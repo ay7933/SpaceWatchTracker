@@ -61,6 +61,7 @@ export default function Home() {
         onMobileClose={() => setIsMobileMenuOpen(false)}
         currentBounds={currentBounds}
         onLoadingChange={setIsLoadingImagery}
+        coordinates={coordinates}
       />
 
       {/* Main content */}

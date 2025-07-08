@@ -6,12 +6,19 @@ import { ImageSettings } from './image-settings';
 import { LayerInfo } from './layer-info';
 import { LayerColorKey } from './layer-color-key';
 import { BandsReference } from './bands-reference';
+import { ImpactDashboard } from '@/components/dashboard/impact-dashboard';
+import { ReportForm } from '@/components/community/report-form';
+import { ReportsDisplay } from '@/components/community/reports-display';
+import { ChangeDetection } from '@/components/analysis/change-detection';
+import { ExportReport } from '@/components/export/export-report';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSatelliteImagery } from '@/hooks/use-satellite-imagery';
+import { useCommunityReports } from '@/hooks/use-community-reports';
 import { useToast } from '@/hooks/use-toast';
-import { Satellite, Download, Search, AlertTriangle, Clock } from 'lucide-react';
-import type { MapState } from '@/types';
+import { Satellite, Download, Search, AlertTriangle, Clock, Plus, Users, Activity } from 'lucide-react';
+import type { MapState, ImpactMetrics, ChangeDetectionResult } from '@/types';
 
 interface SidebarProps {
   mapState: MapState;
@@ -20,11 +27,13 @@ interface SidebarProps {
   onMobileClose: () => void;
   currentBounds?: [number, number, number, number] | null;
   onLoadingChange?: (loading: boolean) => void;
+  coordinates: { lat: number; lng: number };
 }
 
-export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose, currentBounds, onLoadingChange }: SidebarProps) {
+export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose, currentBounds, onLoadingChange, coordinates }: SidebarProps) {
   const { toast } = useToast();
   const satelliteImagery = useSatelliteImagery();
+  const { reports, addReport, verifyReport, getReportsByLocation } = useCommunityReports();
 
   const calculateAreaSizeKm = (bounds: [number, number, number, number]) => {
     const [west, south, east, north] = bounds;
@@ -59,6 +68,33 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
       };
     }
     return null;
+  };
+
+  // Calculate impact metrics based on current state
+  const calculateImpactMetrics = (): ImpactMetrics => {
+    const areaKm = currentBounds ? calculateAreaSizeKm(currentBounds) : 0;
+    
+    // Mock vegetation coverage based on layer type
+    let vegetationCoverage, waterCoverage, urbanCoverage;
+    
+    if (mapState.selectedLayer === 'VEGETATION_INDEX') {
+      vegetationCoverage = Math.round(Math.random() * 40 + 40); // 40-80%
+    } else if (mapState.selectedLayer === 'TRUE_COLOR') {
+      vegetationCoverage = Math.round(Math.random() * 30 + 20); // 20-50%
+      waterCoverage = Math.round(Math.random() * 15 + 5); // 5-20%
+      urbanCoverage = Math.round(Math.random() * 25 + 10); // 10-35%
+    } else if (mapState.selectedLayer === 'BATHYMETRIC') {
+      waterCoverage = Math.round(Math.random() * 60 + 30); // 30-90%
+    }
+
+    return {
+      areaKm2: areaKm,
+      vegetationCoverage,
+      waterCoverage,
+      urbanCoverage,
+      changeDetected: false,
+      estimatedCarbonImpact: areaKm * 0.1 * (vegetationCoverage || 0) / 100,
+    };
   };
 
   const handleLoadImagery = async () => {
@@ -180,32 +216,100 @@ export function Sidebar({ mapState, updateMapState, isMobileOpen, onMobileClose,
 
         {/* Controls Section */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
-          <LayerSelector
-            selectedLayer={mapState.selectedLayer}
-            onLayerChange={(layer) => updateMapState({ selectedLayer: layer })}
-          />
+          <Tabs defaultValue="imagery" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="imagery" className="text-xs">
+                <Satellite className="h-4 w-4 mr-1" />
+                Imagery
+              </TabsTrigger>
+              <TabsTrigger value="analysis" className="text-xs">
+                <Activity className="h-4 w-4 mr-1" />
+                Analysis
+              </TabsTrigger>
+              <TabsTrigger value="community" className="text-xs">
+                <Users className="h-4 w-4 mr-1" />
+                Community
+              </TabsTrigger>
+            </TabsList>
 
-          <DateRangePicker
-            dateFrom={mapState.dateFrom}
-            dateTo={mapState.dateTo}
-            onDateChange={(dateFrom, dateTo) => updateMapState({ dateFrom, dateTo })}
-          />
+            <TabsContent value="imagery" className="space-y-4">
+              <LayerSelector
+                selectedLayer={mapState.selectedLayer}
+                onLayerChange={(layer) => updateMapState({ selectedLayer: layer })}
+              />
 
-          <WeatherOverlay
-            overlays={mapState.weatherOverlays}
-            onOverlayChange={(overlays) => updateMapState({ weatherOverlays: overlays })}
-          />
+              <DateRangePicker
+                dateFrom={mapState.dateFrom}
+                dateTo={mapState.dateTo}
+                onDateChange={(dateFrom, dateTo) => updateMapState({ dateFrom, dateTo })}
+              />
 
-          <ImageSettings
-            settings={mapState.imageSettings}
-            onSettingsChange={(settings) => updateMapState({ imageSettings: settings })}
-          />
+              <WeatherOverlay
+                overlays={mapState.weatherOverlays}
+                onOverlayChange={(overlays) => updateMapState({ weatherOverlays: overlays })}
+              />
 
-          <LayerInfo selectedLayer={mapState.selectedLayer} />
+              <ImageSettings
+                settings={mapState.imageSettings}
+                onSettingsChange={(settings) => updateMapState({ imageSettings: settings })}
+              />
 
-          <LayerColorKey selectedLayer={mapState.selectedLayer} />
+              <LayerInfo selectedLayer={mapState.selectedLayer} />
 
-          <BandsReference />
+              <LayerColorKey selectedLayer={mapState.selectedLayer} />
+
+              <BandsReference />
+            </TabsContent>
+
+            <TabsContent value="analysis" className="space-y-4">
+              <ImpactDashboard
+                metrics={calculateImpactMetrics()}
+                location={`${coordinates.lat.toFixed(2)}, ${coordinates.lng.toFixed(2)}`}
+              />
+
+              <ChangeDetection
+                imageUrl1={mapState.satelliteImageUrl}
+                imageUrl2={mapState.satelliteImageUrl}
+                bounds={currentBounds || undefined}
+              />
+
+              <ExportReport
+                location={`${coordinates.lat.toFixed(2)}, ${coordinates.lng.toFixed(2)}`}
+                coordinates={[coordinates.lat, coordinates.lng]}
+                bounds={currentBounds || [0, 0, 0, 0]}
+                layer={mapState.selectedLayer}
+                dateRange={{ from: mapState.dateFrom, to: mapState.dateTo }}
+                metrics={calculateImpactMetrics()}
+                images={mapState.satelliteImageUrl ? [mapState.satelliteImageUrl] : []}
+              />
+            </TabsContent>
+
+            <TabsContent value="community" className="space-y-4">
+              <ReportForm
+                coordinates={[coordinates.lat, coordinates.lng]}
+                onSubmit={addReport}
+                trigger={
+                  <Button className="w-full gap-2">
+                    <Plus size={14} />
+                    Report Environmental Issue
+                  </Button>
+                }
+              />
+
+              <ReportsDisplay
+                reports={getReportsByLocation([coordinates.lat, coordinates.lng], 50)}
+                onVerifyReport={verifyReport}
+                onReportClick={(report) => {
+                  // Pan to report location
+                  updateMapState({ center: report.coordinates });
+                  toast({
+                    title: "Report Location",
+                    description: `Navigated to ${report.title}`,
+                  });
+                }}
+              />
+            </TabsContent>
+          </Tabs>
         </div>
 
         {/* Action Buttons */}

@@ -58,3 +58,50 @@ export interface ImageInfo {
   resolution: string;
   cloudCover: string;
 }
+
+export interface CommunityReport {
+  id: string;
+  type: 'deforestation' | 'disaster' | 'pollution' | 'urban_sprawl' | 'agriculture' | 'other';
+  title: string;
+  description: string;
+  coordinates: [number, number];
+  reporter: string;
+  timestamp: string;
+  verified: boolean;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  images?: string[];
+}
+
+export interface ImpactMetrics {
+  areaKm2: number;
+  vegetationCoverage?: number;
+  waterCoverage?: number;
+  urbanCoverage?: number;
+  changeDetected?: boolean;
+  changePercentage?: number;
+  estimatedCarbonImpact?: number;
+}
+
+export interface ChangeDetectionResult {
+  hasSignificantChange: boolean;
+  changeType: 'vegetation_loss' | 'vegetation_gain' | 'water_change' | 'urban_expansion' | 'other';
+  affectedAreaKm2: number;
+  changePercentage: number;
+  confidenceLevel: number;
+  description: string;
+}
+
+export interface ExportReport {
+  id: string;
+  title: string;
+  location: string;
+  coordinates: [number, number];
+  bounds: [number, number, number, number];
+  layer: string;
+  dateRange: { from?: string; to?: string };
+  metrics: ImpactMetrics;
+  changeDetection?: ChangeDetectionResult;
+  images: string[];
+  timestamp: string;
+  shareUrl?: string;
+}

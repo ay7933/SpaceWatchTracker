@@ -68,10 +68,66 @@
 /* Custom styles for SpaceWatch */
 .leaflet-container {
   background: hsl(240, 5%, 6%) !important;
+  z-index: 1 !important;
 }
 
 .leaflet-control-container {
   display: none !important;
+}
+
+/* Ensure map doesn't cover toolbar in fullscreen */
+:fullscreen .leaflet-container {
+  z-index: 1 !important;
+}
+
+:-webkit-full-screen .leaflet-container {
+  z-index: 1 !important;
+}
+
+:-moz-full-screen .leaflet-container {
+  z-index: 1 !important;
+}
+
+/* Force map container to stay below toolbar */
+.map-container-div {
+  z-index: 1;
+}
+
+:fullscreen .map-container-div {
+  z-index: 1 !important;
+}
+
+:-webkit-full-screen .map-container-div {
+  z-index: 1 !important;
+}
+
+:-moz-full-screen .map-container-div {
+  z-index: 1 !important;
+}
+
+/* Ensure all leaflet layers stay below */
+:fullscreen .leaflet-tile-pane,
+:fullscreen .leaflet-overlay-pane,
+:fullscreen .leaflet-marker-pane,
+:fullscreen .leaflet-popup-pane,
+:fullscreen .leaflet-shadow-pane {
+  z-index: 1 !important;
+}
+
+:-webkit-full-screen .leaflet-tile-pane,
+:-webkit-full-screen .leaflet-overlay-pane,
+:-webkit-full-screen .leaflet-marker-pane,
+:-webkit-full-screen .leaflet-popup-pane,
+:-webkit-full-screen .leaflet-shadow-pane {
+  z-index: 1 !important;
+}
+
+:-moz-full-screen .leaflet-tile-pane,
+:-moz-full-screen .leaflet-overlay-pane,
+:-moz-full-screen .leaflet-marker-pane,
+:-moz-full-screen .leaflet-popup-pane,
+:-moz-full-screen .leaflet-shadow-pane {
+  z-index: 1 !important;
 }
 
 /* Custom checkbox styles */
@@ -115,18 +171,27 @@ input[type="range"] {
 
 /* Fullscreen top toolbar visibility */
 :fullscreen .top-toolbar {
-  z-index: 999 !important;
+  z-index: 999999 !important;
   position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
 }
 
 :-webkit-full-screen .top-toolbar {
-  z-index: 999 !important;
+  z-index: 999999 !important;
   position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
 }
 
 :-moz-full-screen .top-toolbar {
-  z-index: 999 !important;
+  z-index: 999999 !important;
   position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
 }
 
 /* Ensure fullscreen elements don't interfere */

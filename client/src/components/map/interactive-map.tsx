@@ -174,7 +174,7 @@ export function InteractiveMap({ mapState, onMapChange, onBoundsChange, isLoadin
 
   return (
     <div className="w-full h-full relative">
-      <div ref={containerRef} className="w-full h-full" />
+      <div ref={containerRef} className="w-full h-full map-container-div" />
       
       {/* Loading overlay */}
       {isLoading && (
